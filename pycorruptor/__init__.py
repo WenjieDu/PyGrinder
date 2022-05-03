@@ -8,7 +8,7 @@ PyCorruptor package
 from .__version__ import version as __version__
 
 from .corrupt import (
-    originally_missing_rate,
+    cal_missing_rate,
     fill_nan_with_mask,
     mcar,
 )

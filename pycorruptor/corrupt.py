@@ -7,21 +7,37 @@ Corrupt data by adding missing values to it with optional missing patterns (MCAR
 
 import numpy as np
 
+try:
+    import torch
+except ImportError:
+    pass
 
-def originally_missing_rate(data):
+
+def cal_missing_rate(X):
     """ Calculate the originally missing rate of the raw data.
 
     Parameters
     ----------
-    data : array,
-        Data array.
+    X : array-like,
+        Data array that may contain missing values.
 
     Returns
     -------
     originally_missing_rate, float,
         The originally missing rate of the raw data.
     """
-    originally_missing_rate = np.sum(np.isnan(data)) / np.product(data.shape)
+    if isinstance(X, list):
+        X = np.asarray(X)
+
+    if isinstance(X, np.ndarray):
+        originally_missing_rate = np.sum(np.isnan(X)) / np.product(X.shape)
+    elif isinstance(X, torch.Tensor):
+        originally_missing_rate = torch.sum(torch.isnan(X)) / np.product(X.shape)
+        originally_missing_rate = originally_missing_rate.item()
+    else:
+        raise TypeError('X must be type of list/numpy.ndarray/torch.Tensor, '
+                        f'but got {type(X)}')
+
     return originally_missing_rate
 
 
@@ -30,10 +46,10 @@ def fill_nan_with_mask(X, mask):
 
     Parameters
     ----------
-    X : array,
+    X : array-like,
         Data vector having missing values filled with numbers (i.e. not nan).
 
-    mask : array,
+    mask : array-like,
         Mask vector contains binary values indicating which values are missing in `data`.
 
     Returns
@@ -41,10 +57,24 @@ def fill_nan_with_mask(X, mask):
     array,
         Data vector having missing values placed with np.nan.
     """
-    assert X.shape == mask.shape, f'Shapes of data and mask must match, ' \
+    assert X.shape == mask.shape, 'Shapes of X and mask must match, ' \
                                   f'but X.shape={X.shape}, mask.shape={mask.shape}'
-    mask = mask.astype(bool)
-    X[~mask] = np.nan
+    assert type(X) == type(mask), 'Data types of X and mask must match, ' \
+                                  f'but got {type(X)} and {type(mask)}'
+    if isinstance(X, list):
+        X = np.asarray(X)
+        mask = np.asarray(mask)
+
+    if isinstance(X, np.ndarray):
+        mask = mask.astype(bool)
+        X[~mask] = np.nan
+    elif isinstance(X, torch.Tensor):
+        mask = mask.type(torch.bool)
+        X[~mask] = np.nan
+    else:
+        raise TypeError('X must be type of list/numpy.ndarray/torch.Tensor, '
+                        f'but got {type(X)}')
+
     return X
 
 
@@ -94,7 +124,19 @@ def mcar(X, rate, nan=0):
     indicating_mask : array,
         The mask indicates the artificially-missing values in X, namely missing parts different from X_intact.
     """
+    if isinstance(X, list):
+        X = np.asarray(X)
 
+    if isinstance(X, np.ndarray):
+        return _mcar_numpy(X, rate, nan)
+    elif isinstance(X, torch.Tensor):
+        return _mcar_torch(X, rate, nan)
+    else:
+        raise TypeError('X must be type of list/numpy.ndarray/torch.Tensor, '
+                        f'but got {type(X)}')
+
+
+def _mcar_numpy(X, rate, nan=0):
     original_shape = X.shape
     X = X.flatten()
     X_intact = np.copy(X)  # keep a copy of originally observed values in X_intact
@@ -107,6 +149,27 @@ def mcar(X, rate, nan=0):
     missing_mask = (~np.isnan(X)).astype(np.float32)
     X_intact = np.nan_to_num(X_intact, nan=nan)
     X = np.nan_to_num(X, nan=nan)
+    # reshape into time-series data
+    X_intact = X_intact.reshape(original_shape)
+    X = X.reshape(original_shape)
+    missing_mask = missing_mask.reshape(original_shape)
+    indicating_mask = indicating_mask.reshape(original_shape)
+    return X_intact, X, missing_mask, indicating_mask
+
+
+def _mcar_torch(X, rate, nan=0):
+    original_shape = X.shape
+    X = X.flatten()
+    X_intact = torch.clone(X)  # keep a copy of originally observed values in X_intact
+    # select random indices for artificial mask
+    indices = torch.where(~torch.isnan(X))[0].tolist()  # get the indices of observed values
+    indices = np.random.choice(indices, int(len(indices) * rate), replace=False)
+    # create artificially-missing values by selected indices
+    X[indices] = torch.nan  # mask values selected by indices
+    indicating_mask = ((~torch.isnan(X_intact)) ^ (~torch.isnan(X))).type(torch.float32)
+    missing_mask = (~torch.isnan(X)).type(torch.float32)
+    X_intact = torch.nan_to_num(X_intact, nan=nan)
+    X = torch.nan_to_num(X, nan=nan)
     # reshape into time-series data
     X_intact = X_intact.reshape(original_shape)
     X = X.reshape(original_shape)
