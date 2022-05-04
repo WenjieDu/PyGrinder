@@ -50,7 +50,8 @@ def fill_nan_with_mask(X, mask):
         Data vector having missing values filled with numbers (i.e. not nan).
 
     mask : array-like,
-        Mask vector contains binary values indicating which values are missing in `data`.
+        Mask vector contains binary values (0/1) indicating which values are missing in `data`.
+        1 indicates observed values, and 0 indicates missing values.
 
     Returns
     -------
@@ -70,7 +71,7 @@ def fill_nan_with_mask(X, mask):
         X[~mask] = np.nan
     elif isinstance(X, torch.Tensor):
         mask = mask.type(torch.bool)
-        X[~mask] = np.nan
+        X[~mask] = torch.nan
     else:
         raise TypeError('X must be type of list/numpy.ndarray/torch.Tensor, '
                         f'but got {type(X)}')
@@ -120,9 +121,11 @@ def mcar(X, rate, nan=0):
 
     missing_mask : array,
         The mask indicates all missing values in X.
+        In it, 1 indicates observed values, and 0 indicates missing values.
 
     indicating_mask : array,
         The mask indicates the artificially-missing values in X, namely missing parts different from X_intact.
+        In it, 1 indicates artificially missing values, and other values are indicated as 0.
     """
     if isinstance(X, list):
         X = np.asarray(X)
@@ -158,6 +161,7 @@ def _mcar_numpy(X, rate, nan=0):
 
 
 def _mcar_torch(X, rate, nan=0):
+    X = X.clone()  # clone X to ensure values of X out of this function not being affected
     original_shape = X.shape
     X = X.flatten()
     X_intact = torch.clone(X)  # keep a copy of originally observed values in X_intact
