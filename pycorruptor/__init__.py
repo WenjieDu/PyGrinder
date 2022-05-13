@@ -9,6 +9,6 @@ from .__version__ import version as __version__
 
 from .corrupt import (
     cal_missing_rate,
-    fill_nan_with_mask,
+    masked_fill,
     mcar,
 )

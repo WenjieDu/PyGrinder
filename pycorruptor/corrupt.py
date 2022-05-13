@@ -41,37 +41,40 @@ def cal_missing_rate(X):
     return originally_missing_rate
 
 
-def fill_nan_with_mask(X, mask):
-    """ Fill missing values in ``X`` with nan according to mask.
+def masked_fill(X, mask, val=np.nan):
+    """ Like torch.Tensor.masked_fill(), fill elements in given `X` with `val` where `mask` is True.
 
     Parameters
     ----------
     X : array-like,
-        Data vector having missing values filled with numbers (i.e. not nan).
+        The data vector.
 
     mask : array-like,
-        Mask vector contains binary values (0/1) indicating which values are missing in `data`.
-        1 indicates observed values, and 0 indicates missing values.
+        The boolean mask.
+
+    val : float, default = np.nan
+        The value to fill in with.
 
     Returns
     -------
     array,
-        Data vector having missing values placed with np.nan.
+        mask
     """
     assert X.shape == mask.shape, 'Shapes of X and mask must match, ' \
                                   f'but X.shape={X.shape}, mask.shape={mask.shape}'
     assert type(X) == type(mask), 'Data types of X and mask must match, ' \
                                   f'but got {type(X)} and {type(mask)}'
+
     if isinstance(X, list):
         X = np.asarray(X)
         mask = np.asarray(mask)
 
     if isinstance(X, np.ndarray):
         mask = mask.astype(bool)
-        X[~mask] = np.nan
+        X[mask] = val
     elif isinstance(X, torch.Tensor):
         mask = mask.type(torch.bool)
-        X[~mask] = torch.nan
+        X[mask] = val
     else:
         raise TypeError('X must be type of list/numpy.ndarray/torch.Tensor, '
                         f'but got {type(X)}')
