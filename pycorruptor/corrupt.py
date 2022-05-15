@@ -41,7 +41,7 @@ def cal_missing_rate(X):
     return originally_missing_rate
 
 
-def masked_fill(X, mask, val=np.nan):
+def masked_fill(X, mask, val):
     """ Like torch.Tensor.masked_fill(), fill elements in given `X` with `val` where `mask` is True.
 
     Parameters
@@ -52,7 +52,7 @@ def masked_fill(X, mask, val=np.nan):
     mask : array-like,
         The boolean mask.
 
-    val : float, default = np.nan
+    val : float
         The value to fill in with.
 
     Returns
