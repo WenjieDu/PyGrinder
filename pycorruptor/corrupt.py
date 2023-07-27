@@ -14,7 +14,7 @@ except ImportError:
 
 
 def cal_missing_rate(X):
-    """ Calculate the originally missing rate of the raw data.
+    """Calculate the originally missing rate of the raw data.
 
     Parameters
     ----------
@@ -35,14 +35,15 @@ def cal_missing_rate(X):
         originally_missing_rate = torch.sum(torch.isnan(X)) / np.product(X.shape)
         originally_missing_rate = originally_missing_rate.item()
     else:
-        raise TypeError('X must be type of list/numpy.ndarray/torch.Tensor, '
-                        f'but got {type(X)}')
+        raise TypeError(
+            "X must be type of list/numpy.ndarray/torch.Tensor, " f"but got {type(X)}"
+        )
 
     return originally_missing_rate
 
 
 def masked_fill(X, mask, val):
-    """ Like torch.Tensor.masked_fill(), fill elements in given `X` with `val` where `mask` is True.
+    """Like torch.Tensor.masked_fill(), fill elements in given `X` with `val` where `mask` is True.
 
     Parameters
     ----------
@@ -60,10 +61,13 @@ def masked_fill(X, mask, val):
     array,
         mask
     """
-    assert X.shape == mask.shape, 'Shapes of X and mask must match, ' \
-                                  f'but X.shape={X.shape}, mask.shape={mask.shape}'
-    assert type(X) == type(mask), 'Data types of X and mask must match, ' \
-                                  f'but got {type(X)} and {type(mask)}'
+    assert X.shape == mask.shape, (
+        "Shapes of X and mask must match, "
+        f"but X.shape={X.shape}, mask.shape={mask.shape}"
+    )
+    assert type(X) == type(mask), (
+        "Data types of X and mask must match, " f"but got {type(X)} and {type(mask)}"
+    )
 
     if isinstance(X, list):
         X = np.asarray(X)
@@ -76,8 +80,9 @@ def masked_fill(X, mask, val):
         mask = mask.type(torch.bool)
         X[mask] = val
     else:
-        raise TypeError('X must be type of list/numpy.ndarray/torch.Tensor, '
-                        f'but got {type(X)}')
+        raise TypeError(
+            "X must be type of list/numpy.ndarray/torch.Tensor, " f"but got {type(X)}"
+        )
 
     return X
 
@@ -88,11 +93,11 @@ def little_mcar_test(X):
     Refer to :cite:`little1988TestMCAR`
     """
     # TODO: Little's MCAR test
-    raise NotImplementedError('MCAR test has not been implemented yet.')
+    raise NotImplementedError("MCAR test has not been implemented yet.")
 
 
 def mcar(X, rate, nan=0):
-    """ Create completely random missing values (MCAR case).
+    """Create completely random missing values (MCAR case).
 
     Parameters
     ----------
@@ -138,8 +143,9 @@ def mcar(X, rate, nan=0):
     elif isinstance(X, torch.Tensor):
         return _mcar_torch(X, rate, nan)
     else:
-        raise TypeError('X must be type of list/numpy.ndarray/torch.Tensor, '
-                        f'but got {type(X)}')
+        raise TypeError(
+            "X must be type of list/numpy.ndarray/torch.Tensor, " f"but got {type(X)}"
+        )
 
 
 def _mcar_numpy(X, rate, nan=0):
@@ -164,12 +170,16 @@ def _mcar_numpy(X, rate, nan=0):
 
 
 def _mcar_torch(X, rate, nan=0):
-    X = X.clone()  # clone X to ensure values of X out of this function not being affected
+    X = (
+        X.clone()
+    )  # clone X to ensure values of X out of this function not being affected
     original_shape = X.shape
     X = X.flatten()
     X_intact = torch.clone(X)  # keep a copy of originally observed values in X_intact
     # select random indices for artificial mask
-    indices = torch.where(~torch.isnan(X))[0].tolist()  # get the indices of observed values
+    indices = torch.where(~torch.isnan(X))[
+        0
+    ].tolist()  # get the indices of observed values
     indices = np.random.choice(indices, int(len(indices) * rate), replace=False)
     # create artificially-missing values by selected indices
     X[indices] = torch.nan  # mask values selected by indices
@@ -186,7 +196,7 @@ def _mcar_torch(X, rate, nan=0):
 
 
 def mar(X, rate, nan=0):
-    """ Create random missing values (MAR case).
+    """Create random missing values (MAR case).
 
     Parameters
     ----------
@@ -211,11 +221,11 @@ def mar(X, rate, nan=0):
 
     """
     # TODO: Create missing values in MAR case
-    raise NotImplementedError('MAR case has not been implemented yet.')
+    raise NotImplementedError("MAR case has not been implemented yet.")
 
 
 def mnar(X, rate, nan=0):
-    """ Create not-random missing values (MNAR case).
+    """Create not-random missing values (MNAR case).
 
     Parameters
     ----------
@@ -240,4 +250,4 @@ def mnar(X, rate, nan=0):
 
     """
     # TODO: Create missing values in MNAR case
-    raise NotImplementedError('MNAR case has not been implemented yet.')
+    raise NotImplementedError("MNAR case has not been implemented yet.")

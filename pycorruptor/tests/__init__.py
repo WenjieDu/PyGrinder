@@ -1,5 +1,5 @@
 """
-Test cases for TSDB.
+Test cases for PyCorruptor.
 """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>
