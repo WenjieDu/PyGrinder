@@ -1,0 +1,48 @@
+name: CI
+
+on:
+    push:
+        branches:
+            - main
+            - dev
+            - temp_test_branch  # if in need, create such a temporary branch to test some functions
+    pull_request:
+        branches:
+            - dev
+
+jobs:
+    test:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            fail-fast: false
+            matrix:
+                os: [ ubuntu-latest, windows-latest, macOS-latest ]
+                python-version: [ 3.7, 3.9 ]
+
+        steps:
+            -   uses: actions/checkout@v3
+            -   name: Set up Python ${{ matrix.python-version }}
+                uses: actions/setup-python@v3
+                with:
+                    python-version: ${{ matrix.python-version }}
+
+            -   name: Install dependencies
+                run: |
+                    python -m pip install --upgrade pip
+                    pip install -r requirements.txt
+                    pip install pytest
+                    pip install coverage
+
+            -   name: Test with pytest
+                run: |
+                    coverage run --source=pycorruptor -m pytest
+
+            -   name: Write the LCOV report
+                run: |
+                    coverage lcov
+
+            -   name: Submit report
+                uses: coverallsapp/github-action@master
+                with:
+                    github-token: ${{ secrets.GITHUB_TOKEN }}
+                    path-to-lcov: 'coverage.lcov'

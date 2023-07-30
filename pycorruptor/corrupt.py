@@ -65,7 +65,7 @@ def masked_fill(X, mask, val):
         "Shapes of X and mask must match, "
         f"but X.shape={X.shape}, mask.shape={mask.shape}"
     )
-    assert type(X) == type(mask), (
+    assert isinstance(X, type(mask)), (
         "Data types of X and mask must match, " f"but got {type(X)} and {type(mask)}"
     )
 
