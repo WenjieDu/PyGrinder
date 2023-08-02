@@ -24,6 +24,8 @@ class TestPyCorruptor(unittest.TestCase):
         shape_product = np.product(d.shape)
         actual_missing_rate = (shape_product - missing_mask.sum()) / shape_product
         assert (
-                round(actual_missing_rate, 1) == DEFAULT_MISSING_RATE
+            round(actual_missing_rate, 1) == DEFAULT_MISSING_RATE
         ), f"Actual missing rate is {actual_missing_rate}, not given {DEFAULT_MISSING_RATE}"
-        assert np.sum(d_with_missing[(1 - missing_mask).astype(bool)]) == NAN * np.sum(1 - missing_mask)
+        assert np.sum(d_with_missing[(1 - missing_mask).astype(bool)]) == NAN * np.sum(
+            1 - missing_mask
+        )

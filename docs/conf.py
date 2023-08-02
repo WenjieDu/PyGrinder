@@ -13,8 +13,12 @@
 import sys
 from os.path import abspath
 
-sys.path.insert(0, abspath(".."))
-from pycorruptor.__version__ import version
+try:
+    sys.path.insert(0, abspath(".."))
+except IndexError:
+    pass
+
+from pycorruptor import __version__
 
 sys.path.insert(0, abspath("../pycorruptor"))
 
@@ -25,7 +29,7 @@ copyright = "2023, Wenjie Du"
 author = "Wenjie Du"
 
 # The full version, including alpha/beta/rc tags
-release = version
+release = __version__
 
 # -- General configuration ---------------------------------------------------
 
