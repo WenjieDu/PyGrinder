@@ -1,6 +1,7 @@
-<a href='https://github.com/WenjieDu/PyCorruptor'><img src='https://raw.githubusercontent.com/WenjieDu/PyCorruptor/main/docs/figs/PyCorruptor.svg?sanitize=true' width='350' align='right' /></a>
+<a href='https://github.com/WenjieDu/PyCorruptor'><img src='https://raw.githubusercontent.com/PyPOTS/pypots.github.io/main/static/figs/pypots_logos/PyCorruptor_logo_FFBG.svg?sanitize=true' width='350' align='right' /></a>
 
 # <p align='center'>Welcome to PyCorruptor</p>
+
 **<p align='center'>A Python Toolbox for Data Corruption</p>**
 <p align='center'>
     <!-- Python version -->
@@ -8,11 +9,11 @@
     <!-- PyPI version -->
     <img alt="PyPI" src="https://img.shields.io/pypi/v/pycorruptor?color=green&label=PyPI">
     <!-- GitHub Testing -->
-    <a alt='GitHub Testing' href='https://github.com/WenjieDu/PyCorruptor/actions/workflows/testing.yml'> 
-        <img src='https://github.com/WenjieDu/PyCorruptor/actions/workflows/testing.yml/badge.svg'>
+    <a alt='GitHub Testing' href='https://github.com/WenjieDu/PyCorruptor/actions/workflows/testing_ci.yml'>
+        <img src='https://github.com/WenjieDu/PyCorruptor/actions/workflows/testing_ci.yml/badge.svg'>
     </a>
     <!-- Coveralls report -->
-    <a alt='Coveralls report' href='https://coveralls.io/github/WenjieDu/PyCorruptor'> 
+    <a alt='Coveralls report' href='https://coveralls.io/github/WenjieDu/PyCorruptor'>
         <img src='https://img.shields.io/coverallsCoverage/github/WenjieDu/PyCorruptor?branch=main&logo=coveralls'>
     </a>
     <a href="https://anaconda.org/conda-forge/pycorruptor">
@@ -22,16 +23,21 @@
         <img alt="PyPI downloads" src="https://static.pepy.tech/personalized-badge/pycorruptor?period=total&units=international_system&left_color=grey&right_color=blue&left_text=PyPI%20Downloads">
     </a>
     <!-- Visit number -->
-    
+
 </p>
 
-<a href='https://github.com/WenjieDu/PyPOTS'><img src='https://raw.githubusercontent.com/WenjieDu/PyPOTS/main/docs/_static/figs/PyPOTS_logo.svg?sanitize=true' width='160' align='left' /></a>
-PyCorruptor is a part of [PyPOTS project](https://github.com/WenjieDu/PyPOTS) (a Python toolbox for data mining on Partially-Observed Time Series), and was separated from PyPOTS for decoupling missingness-creating functionalities from learning algorithms.
+<a href='https://github.com/WenjieDu/PyPOTS'><img src='https://raw.githubusercontent.com/PyPOTS/pypots.github.io/main/static/figs/pypots_logos/PyPOTS_logo_FFBG.svg?sanitize=true' width='160' align='left' /></a>
+PyCorruptor is a part of [PyPOTS project](https://github.com/WenjieDu/PyPOTS) (a Python toolbox for data mining on
+Partially-Observed Time Series), and was separated from PyPOTS for decoupling missingness-creating functionalities from
+learning algorithms.
 
-
-In data analysis and modeling, sometimes we may need to corrupt the original data to achieve our goal, for instance, evaluating models' ability to reconstruct corrupted data or assessing the model's performance on only partially-observed data. PyCorruptor is such a tool to help you corrupt your data, which provides several patterns to create missing values in the given data.
+In data analysis and modeling, sometimes we may need to corrupt the original data to achieve our goal, for instance,
+evaluating models' ability to reconstruct corrupted data or assessing the model's performance on only partially-observed
+data. PyCorruptor is such a tool to help you corrupt your data, which provides several patterns to create missing values
+in the given data.
 
 ## ❖ Citing PyCorruptor
+
 The paper introducing PyPOTS project is available on arXiv at [this URL](https://arxiv.org/abs/2305.18811),
 and we are pursuing to publish it in prestigious academic venues, e.g. JMLR (track for
 [Machine Learning Open Source Software](https://www.jmlr.org/mloss/)). If you use PyCorruptor in your work,
