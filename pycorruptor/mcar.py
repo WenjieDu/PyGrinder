@@ -1,5 +1,5 @@
 """
-Corrupt data by adding missing values to it with optional missing patterns (MCAR,MAR,MNAR).
+Corrupt data by adding missing values to it with MCAR (missing completely at random) pattern.
 """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>
@@ -11,89 +11,6 @@ try:
     import torch
 except ImportError:
     pass
-
-
-def cal_missing_rate(X):
-    """Calculate the originally missing rate of the raw data.
-
-    Parameters
-    ----------
-    X : array-like,
-        Data array that may contain missing values.
-
-    Returns
-    -------
-    originally_missing_rate, float,
-        The originally missing rate of the raw data.
-    """
-    if isinstance(X, list):
-        X = np.asarray(X)
-
-    if isinstance(X, np.ndarray):
-        originally_missing_rate = np.sum(np.isnan(X)) / np.product(X.shape)
-    elif isinstance(X, torch.Tensor):
-        originally_missing_rate = torch.sum(torch.isnan(X)) / np.product(X.shape)
-        originally_missing_rate = originally_missing_rate.item()
-    else:
-        raise TypeError(
-            "X must be type of list/numpy.ndarray/torch.Tensor, " f"but got {type(X)}"
-        )
-
-    return originally_missing_rate
-
-
-def masked_fill(X, mask, val):
-    """Like torch.Tensor.masked_fill(), fill elements in given `X` with `val` where `mask` is True.
-
-    Parameters
-    ----------
-    X : array-like,
-        The data vector.
-
-    mask : array-like,
-        The boolean mask.
-
-    val : float
-        The value to fill in with.
-
-    Returns
-    -------
-    array,
-        mask
-    """
-    assert X.shape == mask.shape, (
-        "Shapes of X and mask must match, "
-        f"but X.shape={X.shape}, mask.shape={mask.shape}"
-    )
-    assert isinstance(X, type(mask)), (
-        "Data types of X and mask must match, " f"but got {type(X)} and {type(mask)}"
-    )
-
-    if isinstance(X, list):
-        X = np.asarray(X)
-        mask = np.asarray(mask)
-
-    if isinstance(X, np.ndarray):
-        mask = mask.astype(bool)
-        X[mask] = val
-    elif isinstance(X, torch.Tensor):
-        mask = mask.type(torch.bool)
-        X[mask] = val
-    else:
-        raise TypeError(
-            "X must be type of list/numpy.ndarray/torch.Tensor, " f"but got {type(X)}"
-        )
-
-    return X
-
-
-def little_mcar_test(X):
-    """Little's MCAR Test.
-
-    Refer to :cite:`little1988TestMCAR`
-    """
-    # TODO: Little's MCAR test
-    raise NotImplementedError("MCAR test has not been implemented yet.")
 
 
 def mcar(X, rate, nan=0):
@@ -195,59 +112,10 @@ def _mcar_torch(X, rate, nan=0):
     return X_intact, X, missing_mask, indicating_mask
 
 
-def mar(X, rate, nan=0):
-    """Create random missing values (MAR case).
+def little_mcar_test(X):
+    """Little's MCAR Test.
 
-    Parameters
-    ----------
-    X : array,
-        Data vector. If X has any missing values, they should be numpy.nan.
-
-    rate : float, in (0,1),
-        Artificially missing rate, rate of the observed values which will be artificially masked as missing.
-
-        Note that,
-        `rate` = (number of artificially missing values) / np.sum(~np.isnan(self.data)),
-        not (number of artificially missing values) / np.product(self.data.shape),
-        considering that the given data may already contain missing values,
-        the latter way may be confusing because if the original missing rate >= `rate`,
-        the function will do nothing, i.e. it won't play the role it has to be.
-
-    nan : int/float, optional, default=0
-        Value used to fill NaN values.
-
-    Returns
-    -------
-
+    Refer to :cite:`little1988TestMCAR`
     """
-    # TODO: Create missing values in MAR case
-    raise NotImplementedError("MAR case has not been implemented yet.")
-
-
-def mnar(X, rate, nan=0):
-    """Create not-random missing values (MNAR case).
-
-    Parameters
-    ----------
-    X : array,
-        Data vector. If X has any missing values, they should be numpy.nan.
-
-    rate : float, in (0,1),
-        Artificially missing rate, rate of the observed values which will be artificially masked as missing.
-
-        Note that,
-        `rate` = (number of artificially missing values) / np.sum(~np.isnan(self.data)),
-        not (number of artificially missing values) / np.product(self.data.shape),
-        considering that the given data may already contain missing values,
-        the latter way may be confusing because if the original missing rate >= `rate`,
-        the function will do nothing, i.e. it won't play the role it has to be.
-
-    nan : int/float, optional, default=0
-        Value used to fill NaN values.
-
-    Returns
-    -------
-
-    """
-    # TODO: Create missing values in MNAR case
-    raise NotImplementedError("MNAR case has not been implemented yet.")
+    # TODO: Little's MCAR test
+    raise NotImplementedError("MCAR test has not been implemented yet.")
