@@ -1,29 +1,34 @@
-<a href='https://github.com/WenjieDu/PyCorruptor'><img src='https://raw.githubusercontent.com/PyPOTS/pypots.github.io/main/static/figs/pypots_logos/PyCorruptor_logo_FFBG.svg?sanitize=true' width='350' align='right' /></a>
+<a href='https://github.com/WenjieDu/PyCorruptor'><img src='https://raw.githubusercontent.com/PyPOTS/pypots.github.io/main/static/figs/pypots_logos/PyCorruptor_logo_FFBG.svg?sanitize=true' width='375' align='right' /></a>
 
 # <p align='center'>Welcome to PyCorruptor</p>
 
 **<p align='center'>A Python Toolbox for Data Corruption</p>**
-<p align='center'>
-    <!-- Python version -->
-    <img src='https://img.shields.io/badge/python-v3-yellowgreen'>
-    <!-- PyPI version -->
-    <img alt="PyPI" src="https://img.shields.io/pypi/v/pycorruptor?color=green&label=PyPI">
-    <!-- GitHub Testing -->
-    <a alt='GitHub Testing' href='https://github.com/WenjieDu/PyCorruptor/actions/workflows/testing_ci.yml'>
-        <img src='https://github.com/WenjieDu/PyCorruptor/actions/workflows/testing_ci.yml/badge.svg'>
-    </a>
-    <!-- Coveralls report -->
-    <a alt='Coveralls report' href='https://coveralls.io/github/WenjieDu/PyCorruptor'>
-        <img src='https://img.shields.io/coverallsCoverage/github/WenjieDu/PyCorruptor?branch=main&logo=coveralls'>
-    </a>
-    <a href="https://anaconda.org/conda-forge/pycorruptor">
-        <img alt="Conda downloads" src="https://img.shields.io/conda/dn/conda-forge/pycorruptor?label=Conda%20Downloads&color=AED0ED&logo=anaconda&logoColor=white">
-    </a>
-    <a href="https://pypi.org/project/pycorruptor">
-        <img alt="PyPI downloads" src="https://static.pepy.tech/personalized-badge/pycorruptor?period=total&units=international_system&left_color=grey&right_color=blue&left_text=PyPI%20Downloads">
-    </a>
-    <!-- Visit number -->
 
+<p align='center'>
+    <a href='https://github.com/WenjieDu/PyCorruptor'>
+        <img alt='Python version' src='https://img.shields.io/badge/python-v3-E97040?logo=python&logoColor=white'>
+    </a>
+    <a href="https://github.com/WenjieDu/PyCorruptor/releases">
+        <img alt="the latest release version" src="https://img.shields.io/github/v/release/wenjiedu/PyCorruptor?color=EE781F&include_prereleases&label=Release&logo=github&logoColor=white">
+    </a>
+    <a href="https://github.com/WenjieDu/PyCorruptor/blob/main/LICENSE">
+        <img alt="GPL-v3 license" src="https://img.shields.io/badge/License-GPL--v3-E9BB41?logo=opensourceinitiative&logoColor=white">
+    </a>
+    <a  href='https://github.com/WenjieDu/PyCorruptor/actions/workflows/testing_ci.yml'>
+        <img alt='GitHub Testing' src='https://img.shields.io/github/actions/workflow/status/wenjiedu/PyCorruptor/testing_ci.yml?logo=github&color=C8D8E1&label=CI'>
+    </a>
+    <a href="https://codeclimate.com/github/WenjieDu/PyCorruptor">
+        <img alt="Code Climate maintainability" src="https://img.shields.io/codeclimate/maintainability-percentage/WenjieDu/PyCorruptor?color=3C7699&label=Maintainability&logo=codeclimate">
+    </a>
+    <a href='https://coveralls.io/github/WenjieDu/PyCorruptor'>
+        <img alt='Coveralls report' src='https://img.shields.io/coverallsCoverage/github/WenjieDu/PyCorruptor?branch=main&logo=coveralls&color=75C1C4&label=Coverage'>
+    </a>
+    <a href="https://anaconda.org/conda-forge/PyCorruptor">
+        <img alt="Conda downloads" src="https://img.shields.io/conda/dn/conda-forge/PyCorruptor?label=Conda%20Downloads&color=AED0ED&logo=anaconda&logoColor=white">
+    </a>
+    <a href='https://pepy.tech/project/PyCorruptor'>
+        <img alt='PyPI download number' src='https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FWenjieDu%2FWenjieDu%2Fmain%2Ffigs%2Fprojects%2Fpycorruptor_downloads.json'>
+    </a>
 </p>
 
 <a href='https://github.com/WenjieDu/PyPOTS'><img src='https://raw.githubusercontent.com/PyPOTS/pypots.github.io/main/static/figs/pypots_logos/PyPOTS_logo_FFBG.svg?sanitize=true' width='160' align='left' /></a>
@@ -64,5 +69,5 @@ or
 
 <details>
 <summary>🏠 Visits</summary>
-<img align='left' src='https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FWenjieDu%2FPyCorruptor&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Visits&edge_flat=false'>
+<img align='left' src='https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FWenjieDu%2FPyCorruptor&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Visits+since+May+2022&edge_flat=false'>
 </details>
