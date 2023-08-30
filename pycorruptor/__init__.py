@@ -1,5 +1,5 @@
 """
-PyCorruptor package
+PyCorruptor package.
 """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>
@@ -24,12 +24,11 @@ PyCorruptor package
 __version__ = "0.0.4"
 
 try:
-    from pycorruptor.corrupt import (
+    from pycorruptor.mcar import mcar
+    from pycorruptor.utils import (
         cal_missing_rate,
         masked_fill,
-        mcar,
     )
-
 except Exception as e:
     print(e)
 
