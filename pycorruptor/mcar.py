@@ -65,50 +65,32 @@ def mcar(X, rate, nan=0):
         )
 
 
-def _mcar_numpy(X, rate, nan=0):
-    original_shape = X.shape
-    X = X.flatten()
+def _mcar_numpy(X: np.ndarray, rate: float, nan: float = 0):
+    # clone X to ensure values of X out of this function not being affected
+    X = np.copy(X)
+
     X_intact = np.copy(X)  # keep a copy of originally observed values in X_intact
-    # select random indices for artificial mask
-    indices = np.where(~np.isnan(X))[0].tolist()  # get the indices of observed values
-    indices = np.random.choice(indices, int(len(indices) * rate), replace=False)
-    # create artificially-missing values by selected indices
-    X[indices] = np.nan  # mask values selected by indices
+    mcar_missing_mask = np.asarray(np.random.rand(np.product(X.shape)) < rate)
+    mcar_missing_mask = mcar_missing_mask.reshape(X.shape)
+    X[mcar_missing_mask] = np.nan  # mask values selected by mcar_missing_mask
     indicating_mask = ((~np.isnan(X_intact)) ^ (~np.isnan(X))).astype(np.float32)
     missing_mask = (~np.isnan(X)).astype(np.float32)
     X_intact = np.nan_to_num(X_intact, nan=nan)
     X = np.nan_to_num(X, nan=nan)
-    # reshape into time-series data
-    X_intact = X_intact.reshape(original_shape)
-    X = X.reshape(original_shape)
-    missing_mask = missing_mask.reshape(original_shape)
-    indicating_mask = indicating_mask.reshape(original_shape)
     return X_intact, X, missing_mask, indicating_mask
 
 
-def _mcar_torch(X, rate, nan=0):
-    X = (
-        X.clone()
-    )  # clone X to ensure values of X out of this function not being affected
-    original_shape = X.shape
-    X = X.flatten()
+def _mcar_torch(X: torch.Tensor, rate: float, nan: float = 0):
+    # clone X to ensure values of X out of this function not being affected
+    X = torch.clone(X)
+
     X_intact = torch.clone(X)  # keep a copy of originally observed values in X_intact
-    # select random indices for artificial mask
-    indices = torch.where(~torch.isnan(X))[
-        0
-    ].tolist()  # get the indices of observed values
-    indices = np.random.choice(indices, int(len(indices) * rate), replace=False)
-    # create artificially-missing values by selected indices
-    X[indices] = torch.nan  # mask values selected by indices
+    mcar_missing_mask = torch.rand(X.shape) < rate
+    X[mcar_missing_mask] = torch.nan  # mask values selected by mcar_missing_mask
     indicating_mask = ((~torch.isnan(X_intact)) ^ (~torch.isnan(X))).type(torch.float32)
     missing_mask = (~torch.isnan(X)).type(torch.float32)
     X_intact = torch.nan_to_num(X_intact, nan=nan)
     X = torch.nan_to_num(X, nan=nan)
-    # reshape into time-series data
-    X_intact = X_intact.reshape(original_shape)
-    X = X.reshape(original_shape)
-    missing_mask = missing_mask.reshape(original_shape)
-    indicating_mask = indicating_mask.reshape(original_shape)
     return X_intact, X, missing_mask, indicating_mask
 
 
