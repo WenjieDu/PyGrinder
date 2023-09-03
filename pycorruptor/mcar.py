@@ -80,7 +80,7 @@ def _mcar_numpy(X: np.ndarray, rate: float, nan: float = 0):
     return X_intact, X, missing_mask, indicating_mask
 
 
-def _mcar_torch(X: torch.Tensor, rate: float, nan: float = 0):
+def _mcar_torch(X, rate: float, nan: float = 0):
     # clone X to ensure values of X out of this function not being affected
     X = torch.clone(X)
 
