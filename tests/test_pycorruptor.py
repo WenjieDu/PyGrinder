@@ -9,7 +9,7 @@ import unittest
 
 import numpy as np
 
-import pycorruptor
+from pycorruptor import mcar
 
 DEFAULT_MISSING_RATE = 0.1
 NAN = 1
@@ -18,7 +18,7 @@ NAN = 1
 class TestPyCorruptor(unittest.TestCase):
     def test_0_mcar(self):
         d = np.random.randn(128, 10, 36)
-        d_intact, d_with_missing, missing_mask, indicating_mask = pycorruptor.mcar(
+        d_intact, d_with_missing, missing_mask, indicating_mask = mcar(
             d, rate=DEFAULT_MISSING_RATE, nan=NAN
         )
         shape_product = np.product(d.shape)
