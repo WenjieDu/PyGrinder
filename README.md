@@ -24,10 +24,10 @@
         <img alt='Coveralls report' src='https://img.shields.io/coverallsCoverage/github/WenjieDu/PyCorruptor?branch=main&logo=coveralls&color=75C1C4&label=Coverage'>
     </a>
     <a href="https://anaconda.org/conda-forge/PyCorruptor">
-        <img alt="Conda downloads" src="https://img.shields.io/conda/dn/conda-forge/PyCorruptor?label=Conda%20Downloads&color=AED0ED&logo=anaconda&logoColor=white">
+        <img alt="Conda downloads" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/PyPOTS/pypots.github.io/main/static/figs/downloads_badges/conda_pycorruptor_downloads.json">
     </a>
     <a href='https://pepy.tech/project/PyCorruptor'>
-        <img alt='PyPI download number' src='https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FWenjieDu%2FWenjieDu%2Fmain%2Ffigs%2Fprojects%2Fpycorruptor_downloads.json'>
+        <img alt='PyPI downloads' src='https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/PyPOTS/pypots.github.io/main/static/figs/downloads_badges/pypi_pycorruptor_downloads.json'>
     </a>
 </p>
 
