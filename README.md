@@ -1,4 +1,4 @@
-<a href='https://github.com/WenjieDu/PyCorruptor'><img src='https://raw.githubusercontent.com/PyPOTS/pypots.github.io/main/static/figs/pypots_logos/PyCorruptor_logo_FFBG.svg?sanitize=true' width='375' align='right' /></a>
+<a href='https://github.com/WenjieDu/PyCorruptor'><img src='https://pypots.com/figs/pypots_logos/PyCorruptor_logo_FFBG.svg?sanitize=true' width='375' align='right' /></a>
 
 # <p align='center'>Welcome to PyCorruptor</p>
 
@@ -24,14 +24,14 @@
         <img alt='Coveralls report' src='https://img.shields.io/coverallsCoverage/github/WenjieDu/PyCorruptor?branch=main&logo=coveralls&color=75C1C4&label=Coverage'>
     </a>
     <a href="https://anaconda.org/conda-forge/PyCorruptor">
-        <img alt="Conda downloads" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/PyPOTS/pypots.github.io/main/static/figs/downloads_badges/conda_pycorruptor_downloads.json">
+        <img alt="Conda downloads" src="https://img.shields.io/endpoint?url=https://pypots.com/figs/downloads_badges/conda_pycorruptor_downloads.json">
     </a>
     <a href='https://pepy.tech/project/PyCorruptor'>
-        <img alt='PyPI downloads' src='https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/PyPOTS/pypots.github.io/main/static/figs/downloads_badges/pypi_pycorruptor_downloads.json'>
+        <img alt='PyPI downloads' src='https://img.shields.io/endpoint?url=https://pypots.com/figs/downloads_badges/pypi_pycorruptor_downloads.json'>
     </a>
 </p>
 
-<a href='https://github.com/WenjieDu/PyPOTS'><img src='https://raw.githubusercontent.com/PyPOTS/pypots.github.io/main/static/figs/pypots_logos/PyPOTS_logo_FFBG.svg?sanitize=true' width='160' align='left' /></a>
+<a href='https://github.com/WenjieDu/PyPOTS'><img src='https://pypots.com/figs/pypots_logos/PyPOTS_logo_FFBG.svg?sanitize=true' width='160' align='left' /></a>
 PyCorruptor is a part of [PyPOTS project](https://github.com/WenjieDu/PyPOTS) (a Python toolbox for data mining on
 Partially-Observed Time Series), and was separated from PyPOTS for decoupling missingness-creating functionalities from
 learning algorithms.
