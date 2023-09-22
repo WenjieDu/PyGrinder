@@ -1,6 +1,6 @@
 <a href='https://github.com/WenjieDu/PyCorruptor'><img src='https://pypots.com/figs/pypots_logos/PyCorruptor_logo_FFBG.svg?sanitize=true' width='375' align='right' /></a>
 
-# <p align='center'>Welcome to PyCorruptor</p>
+<h2 align="center">Welcome to PyCorruptor</h2>
 
 **<p align='center'>A Python Toolbox for Data Corruption</p>**
 
