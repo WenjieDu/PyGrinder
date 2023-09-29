@@ -22,14 +22,14 @@ def mcar(X, rate, nan=0):
         Data vector. If X has any missing values, they should be numpy.nan.
 
     rate : float, in (0,1),
-        Artificially missing rate, rate of the observed values which will be artificially masked as missing.
-
-        Note that,
-        `rate` = (number of artificially missing values) / np.sum(~np.isnan(self.data)),
-        not (number of artificially missing values) / np.product(self.data.shape),
-        considering that the given data may already contain missing values,
-        the latter way may be confusing because if the original missing rate >= `rate`,
-        the function will do nothing, i.e. it won't play the role it has to be.
+        Artificially missing rate, the probability that the values may be artificially masked as missing.
+        Note that the values are randomly selected no matter if they are originally missing or observed.
+        If the selected values are originally missing, they will be kept as missing.
+        If the selected values are originally observed, they will be masked as missing.
+        Therefore, if the given X already contains missing data, the final missing rate in the output X could be
+        in range [original_missing_rate, original_missing_rate+rate], but not strictly equal to `original_missing_rate+rate`.
+        Because the selected values to be artificially masked out may be originally missing, and the masking operation
+        on the values will do nothing.
 
     nan : int/float, optional, default=0
         Value used to fill NaN values.
@@ -50,19 +50,21 @@ def mcar(X, rate, nan=0):
 
     indicating_mask : array,
         The mask indicates the artificially-missing values in X, namely missing parts different from X_intact.
-        In it, 1 indicates artificially missing values, and other values are indicated as 0.
+        In it, 1 indicates artificially missing values,
+        and the other values (including originally observed/missing values) are indicated as 0.
     """
     if isinstance(X, list):
         X = np.asarray(X)
 
     if isinstance(X, np.ndarray):
-        return _mcar_numpy(X, rate, nan)
+        X_intact, X, missing_mask, indicating_mask = _mcar_numpy(X, rate, nan)
     elif isinstance(X, torch.Tensor):
-        return _mcar_torch(X, rate, nan)
+        X_intact, X, missing_mask, indicating_mask = _mcar_torch(X, rate, nan)
     else:
         raise TypeError(
             "X must be type of list/numpy.ndarray/torch.Tensor, " f"but got {type(X)}"
         )
+    return X_intact, X, missing_mask, indicating_mask
 
 
 def _mcar_numpy(X: np.ndarray, rate: float, nan: float = 0):
