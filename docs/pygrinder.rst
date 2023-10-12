@@ -1,4 +1,4 @@
-pycorruptor package
+pygrinder package
 ===================
 
 Subpackages
@@ -7,15 +7,15 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   pycorruptor.tests
+   pygrinder.tests
 
 Submodules
 ----------
 
-pycorruptor.corrupt module
+pygrinder.corrupt module
 --------------------------
 
-.. automodule:: pycorruptor.corrupt
+.. automodule:: pygrinder.corrupt
    :members:
    :undoc-members:
    :show-inheritance:
@@ -24,7 +24,7 @@ pycorruptor.corrupt module
 Module contents
 ---------------
 
-.. automodule:: pycorruptor
+.. automodule:: pygrinder
    :members:
    :undoc-members:
    :show-inheritance:

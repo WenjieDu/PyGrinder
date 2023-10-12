@@ -1,5 +1,5 @@
 """
-PyCorruptor test cases
+PyGrinder test cases
 """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>
@@ -9,13 +9,13 @@ import unittest
 
 import numpy as np
 
-from pycorruptor import mcar
+from pygrinder import mcar
 
 DEFAULT_MISSING_RATE = 0.1
 NAN = 1
 
 
-class TestPyCorruptor(unittest.TestCase):
+class TestPyGrinder(unittest.TestCase):
     def test_0_mcar(self):
         d = np.random.randn(128, 10, 36)
         d_intact, d_with_missing, missing_mask, indicating_mask = mcar(
