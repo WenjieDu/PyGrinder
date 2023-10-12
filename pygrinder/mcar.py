@@ -13,7 +13,7 @@ except ImportError:
     pass
 
 
-def mcar(X, rate, nan=0):
+def mcar(X, p, nan=0):
     """Create completely random missing values (MCAR case).
 
     Parameters
@@ -21,8 +21,8 @@ def mcar(X, rate, nan=0):
     X : array,
         Data vector. If X has any missing values, they should be numpy.nan.
 
-    rate : float, in (0,1),
-        Artificially missing rate, the probability that the values may be artificially masked as missing.
+    p : float, in (0,1),
+        The probability that values may be masked as missing completely at random.
         Note that the values are randomly selected no matter if they are originally missing or observed.
         If the selected values are originally missing, they will be kept as missing.
         If the selected values are originally observed, they will be masked as missing.
@@ -57,9 +57,9 @@ def mcar(X, rate, nan=0):
         X = np.asarray(X)
 
     if isinstance(X, np.ndarray):
-        X_intact, X, missing_mask, indicating_mask = _mcar_numpy(X, rate, nan)
+        X_intact, X, missing_mask, indicating_mask = _mcar_numpy(X, p, nan)
     elif isinstance(X, torch.Tensor):
-        X_intact, X, missing_mask, indicating_mask = _mcar_torch(X, rate, nan)
+        X_intact, X, missing_mask, indicating_mask = _mcar_torch(X, p, nan)
     else:
         raise TypeError(
             "X must be type of list/numpy.ndarray/torch.Tensor, " f"but got {type(X)}"

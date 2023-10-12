@@ -1,5 +1,5 @@
 """
-PyGrinder test cases
+PyGrinder test cases.
 """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>
@@ -19,7 +19,7 @@ class TestPyGrinder(unittest.TestCase):
     def test_0_mcar(self):
         d = np.random.randn(128, 10, 36)
         d_intact, d_with_missing, missing_mask, indicating_mask = mcar(
-            d, rate=DEFAULT_MISSING_RATE, nan=NAN
+            d, p=DEFAULT_MISSING_RATE, nan=NAN
         )
         shape_product = np.product(d.shape)
         actual_missing_rate = (shape_product - missing_mask.sum()) / shape_product
