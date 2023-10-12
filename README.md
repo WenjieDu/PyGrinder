@@ -1,8 +1,8 @@
-<a href='https://github.com/WenjieDu/PyGrinder'><img src='https://pypots.com/figs/pypots_logos/PyGrinder_logo_FFBG.svg?sanitize=true' width='375' align='right' /></a>
+<a href='https://github.com/WenjieDu/PyGrinder'><img src='https://pypots.com/figs/pypots_logos/PyGrinder_logo_FFBG.svg?sanitize=true' width='200' align='right' /></a>
 
 <h2 align="center">Welcome to PyGrinder</h2>
 
-**<p align='center'>a Python toolkit for grinding data beans into the incomplete</p>**
+*<p align='center'>a Python toolkit for grinding data beans into the incomplete</p>*
 
 <p align='center'>
     <a href='https://github.com/WenjieDu/PyGrinder'>
@@ -41,16 +41,17 @@ evaluating models' ability to reconstruct corrupted data or assessing the model'
 data. PyGrinder is such a tool to help you corrupt your data, which provides several patterns to create missing values
 in the given data.
 
-## ❖ Citing PyGrinder
+## ❖ Citing PyGrinder/PyPOTS
 
 The paper introducing PyPOTS project is available on arXiv at [this URL](https://arxiv.org/abs/2305.18811),
 and we are pursuing to publish it in prestigious academic venues, e.g. JMLR (track for
 [Machine Learning Open Source Software](https://www.jmlr.org/mloss/)). If you use PyGrinder in your work,
 please cite PyPOTS project as below and 🌟star this repository to make others notice this library. 🤗 Thank you!
 
+
 ``` bibtex
 @article{du2023PyPOTS,
-title={{PyPOTS: A Python Toolbox for Data Mining on Partially-Observed Time Series}},
+title={{PyPOTS: a Python toolbox for data mining on Partially-Observed Time Series}},
 author={Wenjie Du},
 year={2023},
 eprint={2305.18811},
@@ -61,13 +62,28 @@ doi={10.48550/arXiv.2305.18811},
 }
 ```
 
+> Wenjie Du. (2023).
+> PyPOTS: a Python toolbox for data mining on Partially-Observed Time Series.
+> arXiv, abs/2305.18811.https://arxiv.org/abs/2305.18811
+
 or
 
+``` bibtex
+@inproceedings{du2023PyPOTS,
+title={{PyPOTS: a Python toolbox for data mining on Partially-Observed Time Series}},
+booktitle={9th SIGKDD workshop on Mining and Learning from Time Series (MiLeTS'23)},
+author={Wenjie Du},
+year={2023},
+url={https://arxiv.org/abs/2305.18811},
+}
+```
+
 > Wenjie Du. (2023).
-> PyPOTS: A Python Toolbox for Data Mining on Partially-Observed Time Series.
-> arXiv, abs/2305.18811. https://doi.org/10.48550/arXiv.2305.18811
+> PyPOTS: a Python toolbox for data mining on Partially-Observed Time Series.
+> In *9th SIGKDD workshop on Mining and Learning from Time Series (MiLeTS'23)*. https://arxiv.org/abs/2305.18811
+
 
 <details>
 <summary>🏠 Visits</summary>
-<img align='left' src='https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FWenjieDu%2FPyGrinder&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Visits+since+May+2022&edge_flat=false'>
+<img align='left' src='https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FWenjieDu%2FPyCorruptor&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Visits+since+May+2022&edge_flat=false'>
 </details>
