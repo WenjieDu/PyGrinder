@@ -18,13 +18,13 @@ try:
 except IndexError:
     pass
 
-from pycorruptor import __version__
+from pygrinder import __version__
 
-sys.path.insert(0, abspath("../pycorruptor"))
+sys.path.insert(0, abspath("../pygrinder"))
 
 # -- Project information -----------------------------------------------------
 
-project = "PyCorruptor"
+project = "PyGrinder"
 copyright = "2023, Wenjie Du"
 author = "Wenjie Du"
 

@@ -1,5 +1,5 @@
 """
-Test cases for PyCorruptor.
+Test cases for PyGrinder.
 """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>
