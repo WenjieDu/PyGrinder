@@ -33,13 +33,37 @@
 
 <a href='https://github.com/WenjieDu/PyPOTS'><img src='https://pypots.com/figs/pypots_logos/PyPOTS_logo_FFBG.svg?sanitize=true' width='160' align='left' /></a>
 PyGrinder is a part of [PyPOTS project](https://github.com/WenjieDu/PyPOTS) (a Python toolbox for data mining on
-Partially-Observed Time Series), and was separated from PyPOTS for decoupling missingness-creating functionalities from
+Partially-Observed Time Series), was called PyCorruptor and separated from PyPOTS for decoupling missingness-creating functionalities from
 learning algorithms.
 
 In data analysis and modeling, sometimes we may need to corrupt the original data to achieve our goal, for instance,
 evaluating models' ability to reconstruct corrupted data or assessing the model's performance on only partially-observed
 data. PyGrinder is such a tool to help you corrupt your data, which provides several patterns to create missing values
 in the given data.
+
+
+## ❖ Usage Examples
+PyGrinder now is available on <a alt='Anaconda' href='https://anaconda.org/conda-forge/tsdb'><img align='center' src='https://img.shields.io/badge/Anaconda--lightgreen?style=social&logo=anaconda'></a>❗️
+
+Install it with `conda install pygrinder`, you may need to specify the channel with option `-c conda-forge`
+
+or install from PyPI:
+> pip install pygrinder
+
+or install from source code:
+> pip install `https://github.com/WenjieDu/PyGrinder/archive/main.zip`
+
+```python
+import numpy as np
+import pygrinder
+
+# given a time-series dataset with 128 samples, each sample with 10 time steps and 36 data features
+ts_dataset = np.random.randn(128, 10, 36)
+
+# grind the dataset with MCAR pattern, 10% missing probability, and using 0 to fill missing values
+X_intact, X, missing_mask, indicating_mask = pygrinder.mcar(ts_dataset, p=0.1, nan=0)
+```
+
 
 ## ❖ Citing PyGrinder/PyPOTS
 
