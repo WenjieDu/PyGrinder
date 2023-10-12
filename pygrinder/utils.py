@@ -1,5 +1,5 @@
 """
-Utility functions for pycorruptor.
+Utility functions for pygrinder.
 """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>

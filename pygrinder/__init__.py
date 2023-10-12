@@ -1,11 +1,11 @@
 """
-PyCorruptor package.
+PyGrinder package.
 """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>
 # License: GLP-v3
 
-# PyCorruptor version
+# PyGrinder version
 #
 # PEP0440 compatible formatted version, see:
 # https://www.python.org/dev/peps/pep-0440/
@@ -24,8 +24,8 @@ PyCorruptor package.
 __version__ = "0.0.4"
 
 try:
-    from pycorruptor.mcar import mcar
-    from pycorruptor.utils import (
+    from pygrinder.mcar import mcar
+    from pygrinder.utils import (
         cal_missing_rate,
         masked_fill,
     )
