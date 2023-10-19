@@ -62,6 +62,13 @@ ts_dataset = np.random.randn(128, 10, 36)
 
 # grind the dataset with MCAR pattern, 10% missing probability, and using 0 to fill missing values
 X_intact, X, missing_mask, indicating_mask = pygrinder.mcar(ts_dataset, p=0.1, nan=0)
+
+# grind the dataset with MAR pattern
+X_intact, X, missing_mask, indicating_mask = pygrinder.mar_logistic(ts_dataset[:, 0, :], obs_rate=0.1, missing_rate=0.1, nan=0)
+
+# grind the dataset with MNAR pattern
+X_intact, X, missing_mask, indicating_mask = pygrinder.mnar_x(ts_dataset, offset=0.1, nan=0)
+X_intact, X, missing_mask, indicating_mask = pygrinder.mnar_t(ts_dataset, cycle=20, pos = 10, scale = 3, nan=0)
 ```
 
 

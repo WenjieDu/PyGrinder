@@ -5,6 +5,8 @@ Corrupt data by adding missing values to it with MCAR (missing completely at ran
 # Created by Wenjie Du <wenjay.du@gmail.com>
 # License: GPL-v3
 
+from typing import Union, Tuple
+
 import numpy as np
 
 try:
@@ -13,12 +15,19 @@ except ImportError:
     pass
 
 
-def mcar(X, p, nan=0):
+def mcar(
+    X: Union[np.ndarray, torch.Tensor],
+    p: float,
+    nan: Union[float, int] = 0,
+) -> Union[
+    Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray],
+    Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor],
+]:
     """Create completely random missing values (MCAR case).
 
     Parameters
     ----------
-    X : array,
+    X :
         Data vector. If X has any missing values, they should be numpy.nan.
 
     p : float, in (0,1),
@@ -67,12 +76,16 @@ def mcar(X, p, nan=0):
     return X_intact, X, missing_mask, indicating_mask
 
 
-def _mcar_numpy(X: np.ndarray, rate: float, nan: float = 0):
+def _mcar_numpy(
+    X: np.ndarray,
+    p: float,
+    nan: Union[float, int] = 0,
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     # clone X to ensure values of X out of this function not being affected
     X = np.copy(X)
 
     X_intact = np.copy(X)  # keep a copy of originally observed values in X_intact
-    mcar_missing_mask = np.asarray(np.random.rand(np.product(X.shape)) < rate)
+    mcar_missing_mask = np.asarray(np.random.rand(np.product(X.shape)) < p)
     mcar_missing_mask = mcar_missing_mask.reshape(X.shape)
     X[mcar_missing_mask] = np.nan  # mask values selected by mcar_missing_mask
     indicating_mask = ((~np.isnan(X_intact)) ^ (~np.isnan(X))).astype(np.float32)
@@ -82,24 +95,19 @@ def _mcar_numpy(X: np.ndarray, rate: float, nan: float = 0):
     return X_intact, X, missing_mask, indicating_mask
 
 
-def _mcar_torch(X, rate: float, nan: float = 0):
+def _mcar_torch(
+    X: torch.Tensor,
+    p: float,
+    nan: Union[float, int] = 0,
+) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
     # clone X to ensure values of X out of this function not being affected
     X = torch.clone(X)
 
     X_intact = torch.clone(X)  # keep a copy of originally observed values in X_intact
-    mcar_missing_mask = torch.rand(X.shape) < rate
+    mcar_missing_mask = torch.rand(X.shape) < p
     X[mcar_missing_mask] = torch.nan  # mask values selected by mcar_missing_mask
     indicating_mask = ((~torch.isnan(X_intact)) ^ (~torch.isnan(X))).type(torch.float32)
     missing_mask = (~torch.isnan(X)).type(torch.float32)
     X_intact = torch.nan_to_num(X_intact, nan=nan)
     X = torch.nan_to_num(X, nan=nan)
     return X_intact, X, missing_mask, indicating_mask
-
-
-def little_mcar_test(X):
-    """Little's MCAR Test.
-
-    Refer to :cite:`little1988TestMCAR`
-    """
-    # TODO: Little's MCAR test
-    raise NotImplementedError("MCAR test has not been implemented yet.")
