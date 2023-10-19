@@ -25,7 +25,7 @@ def mnar_x(
 ]:
     """Create not-random missing values related to values themselves (MNAR-x case ot self-masking MNAR case).
     This case follows the setting in Ipsen et al. "not-MIWAE: Deep Generative Modelling with Missing Not at Random Data"
-    :cite`ipsen2021notmiwae`.
+    :cite:`ipsen2021notmiwae`.
 
     Parameters
     ----------

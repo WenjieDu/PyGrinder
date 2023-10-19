@@ -21,10 +21,11 @@ PyGrinder package.
 #
 # Dev branch marker is: 'X.Y.dev' or 'X.Y.devN' where N is an integer.
 # 'X.Y.dev0' is the canonical version of 'X.Y.dev'
-__version__ = "0.1"
+__version__ = "0.1.1"
 
 try:
     from pygrinder.mcar import mcar
+    from pygrinder.mar import mar_logistic
     from pygrinder.mnar import mnar_x, mnar_t
     from pygrinder.utils import (
         cal_missing_rate,
@@ -33,12 +34,12 @@ try:
 except Exception as e:
     print(e)
 
-
 __all__ = [
     "__version__",
+    "mcar",
+    "mar_logistic",
+    "mnar_x",
+    "mnar_t",
     "cal_missing_rate",
     "masked_fill",
-    "mcar",
-    "mnar_x"
-    "mnar_t"
 ]

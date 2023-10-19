@@ -5,6 +5,8 @@ Utility functions for pygrinder.
 # Created by Wenjie Du <wenjay.du@gmail.com>
 # License: GPL-v3
 
+from typing import Union
+
 import numpy as np
 
 try:
@@ -13,18 +15,19 @@ except ImportError:
     pass
 
 
-def cal_missing_rate(X):
+def cal_missing_rate(X: Union[np.ndarray, torch.Tensor]) -> float:
     """Calculate the originally missing rate of the raw data.
 
     Parameters
     ----------
-    X : array-like,
+    X:
         Data array that may contain missing values.
 
     Returns
     -------
-    originally_missing_rate, float,
-        The originally missing rate of the raw data.
+    originally_missing_rate,
+        The originally missing rate of the raw data. Its value should be in the range [0,1].
+
     """
     if isinstance(X, list):
         X = np.asarray(X)
@@ -42,24 +45,29 @@ def cal_missing_rate(X):
     return originally_missing_rate
 
 
-def masked_fill(X, mask, val):
+def masked_fill(
+    X: Union[np.ndarray, torch.Tensor],
+    mask: Union[np.ndarray, torch.Tensor],
+    val: float,
+) -> Union[np.ndarray, torch.Tensor]:
     """Like torch.Tensor.masked_fill(), fill elements in given `X` with `val` where `mask` is True.
 
     Parameters
     ----------
-    X : array-like,
+    X:
         The data vector.
 
-    mask : array-like,
+    mask:
         The boolean mask.
 
-    val : float
+    val:
         The value to fill in with.
 
     Returns
     -------
-    array,
-        mask
+    filled_X:
+        Mask filled X.
+
     """
     assert X.shape == mask.shape, (
         "Shapes of X and mask must match, "
@@ -74,14 +82,18 @@ def masked_fill(X, mask, val):
         mask = np.asarray(mask)
 
     if isinstance(X, np.ndarray):
+        filled_X = X.copy()
+        mask = mask.copy()
         mask = mask.astype(bool)
-        X[mask] = val
+        filled_X[mask] = val
     elif isinstance(X, torch.Tensor):
+        filled_X = torch.clone(X)
+        mask = torch.clone(mask)
         mask = mask.type(torch.bool)
-        X[mask] = val
+        filled_X[mask] = val
     else:
         raise TypeError(
             "X must be type of list/numpy.ndarray/torch.Tensor, " f"but got {type(X)}"
         )
 
-    return X
+    return filled_X
