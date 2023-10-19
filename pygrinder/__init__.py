@@ -25,6 +25,7 @@ __version__ = "0.1"
 
 try:
     from pygrinder.mcar import mcar
+    from pygrinder.mnar import mnar_x, mnar_t
     from pygrinder.utils import (
         cal_missing_rate,
         masked_fill,
@@ -38,4 +39,6 @@ __all__ = [
     "cal_missing_rate",
     "masked_fill",
     "mcar",
+    "mnar_x"
+    "mnar_t"
 ]
