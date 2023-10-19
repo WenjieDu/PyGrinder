@@ -11,6 +11,7 @@ import numpy as np
 
 from pygrinder import (
     mcar,
+    mar_logistic,
     mnar_x,
     mnar_t,
 )
@@ -20,11 +21,10 @@ NAN = 1
 
 
 class TestPyGrinder(unittest.TestCase):
-    complete_time_series = np.random.randn(128, 10, 36)
-
     def test_0_mcar(self):
+        X = np.random.randn(128, 10, 36)
         X_intact, X_with_missing, missing_mask, indicating_mask = mcar(
-            self.complete_time_series, p=DEFAULT_MISSING_RATE, nan=NAN
+            X, p=DEFAULT_MISSING_RATE, nan=NAN
         )
         shape_product = np.product(X_intact.shape)
         actual_missing_rate = (shape_product - missing_mask.sum()) / shape_product
@@ -36,12 +36,22 @@ class TestPyGrinder(unittest.TestCase):
         )
 
     def test_1_mar(self):
-        pass
+        X = np.random.randn(128, 36)
+        X_intact, X_with_missing, missing_mask, indicating_mask = mar_logistic(
+            X, obs_rate=0.1, missing_rate=0.2
+        )
+        shape_product = np.product(X_intact.shape)
+        actual_missing_rate = (shape_product - missing_mask.sum()) / shape_product
+        assert (
+            round(actual_missing_rate, 1) > 0
+        ), f"Actual missing rate is {actual_missing_rate}"
 
     def test_2_mnar(self):
+        X = np.random.randn(128, 10, 36)
+
         # mnar_x
         X_intact, X_with_missing, missing_mask, indicating_mask = mnar_x(
-            self.complete_time_series, offset=0, nan=NAN
+            X, offset=0, nan=NAN
         )
         shape_product = np.product(X_intact.shape)
         actual_missing_rate = (shape_product - missing_mask.sum()) / shape_product
@@ -51,7 +61,7 @@ class TestPyGrinder(unittest.TestCase):
 
         # mnar_t
         X_intact, X_with_missing, missing_mask, indicating_mask = mnar_t(
-            self.complete_time_series, cycle=20, pos=10, scale=3, nan=NAN
+            X, cycle=20, pos=10, scale=3, nan=NAN
         )
         shape_product = np.product(X_intact.shape)
         actual_missing_rate = (shape_product - missing_mask.sum()) / shape_product
