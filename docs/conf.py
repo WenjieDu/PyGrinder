@@ -46,6 +46,12 @@ extensions = [
     "sphinxcontrib.bibtex",
 ]
 
+# configs for sphinx.ext.autodoc
+# set the order of the members in the documentation
+autodoc_member_order = "bysource"
+
+napoleon_use_param = True  # enables parsing parameters in docstrings
+
 bibtex_bibfiles = ["references.bib"]
 bibtex_default_style = "unsrt"
 
