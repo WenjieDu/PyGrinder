@@ -111,12 +111,3 @@ def _mcar_torch(
     X_intact = torch.nan_to_num(X_intact, nan=nan)
     X = torch.nan_to_num(X, nan=nan)
     return X_intact, X, missing_mask, indicating_mask
-
-
-def little_mcar_test(X):
-    """Little's MCAR Test.
-
-    Refer to :cite:`little1988TestMCAR`
-    """
-    # TODO: Little's MCAR test
-    raise NotImplementedError("MCAR test has not been implemented yet.")

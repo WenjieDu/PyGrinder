@@ -1,5 +1,5 @@
 """
-PyGrinder package.
+PyGrinder: a Python toolkit for grinding data beans into the incomplete.
 """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>
