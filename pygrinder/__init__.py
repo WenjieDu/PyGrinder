@@ -24,9 +24,9 @@ PyGrinder: a Python toolkit for grinding data beans into the incomplete.
 __version__ = "0.1.1"
 
 try:
-    from pygrinder.mcar import mcar
-    from pygrinder.mar import mar_logistic
-    from pygrinder.mnar import mnar_x, mnar_t
+    from pygrinder.missing_completely_at_random import mcar
+    from pygrinder.missing_at_random import mar_logistic
+    from pygrinder.missing_not_at_random import mnar_x, mnar_t
     from pygrinder.utils import (
         cal_missing_rate,
         masked_fill,
