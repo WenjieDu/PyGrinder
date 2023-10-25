@@ -24,7 +24,7 @@ PyGrinder: a Python toolkit for grinding data beans into the incomplete.
 __version__ = "0.1.1"
 
 try:
-    from pygrinder.missing_completely_at_random import mcar
+    from pygrinder.missing_completely_at_random import mcar, mcar_little_test
     from pygrinder.missing_at_random import mar_logistic
     from pygrinder.missing_not_at_random import mnar_x, mnar_t
     from pygrinder.utils import (
@@ -37,6 +37,7 @@ except Exception as e:
 __all__ = [
     "__version__",
     "mcar",
+    "mcar_little_test",
     "mar_logistic",
     "mnar_x",
     "mnar_t",
