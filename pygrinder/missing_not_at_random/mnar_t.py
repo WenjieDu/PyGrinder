@@ -3,7 +3,7 @@ Corrupt data by adding missing values to it with MNAR (missing not at random) pa
 """
 
 # Created by Jun Wang <jwangfx@connect.ust.hk> and Wenjie Du <wenjay.du@gmail.com>
-# License: GLP-v3
+# License: BSD-3-Clause
 
 from typing import Optional, Union, Tuple
 
