@@ -1,5 +1,5 @@
 # Created by Wenjie Du <wenjay.du@gmail.com>
-# License: GLP-v3
+# License: BSD-3-Clause
 
 from .mnar_t import mnar_t
 from .mnar_x import mnar_x

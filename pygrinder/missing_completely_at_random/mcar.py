@@ -3,16 +3,12 @@ Corrupt data by adding missing values to it with MCAR (missing completely at ran
 """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>
-# License: GPL-v3
+# License: BSD-3-Clause
 
 from typing import Union, Tuple
 
 import numpy as np
-
-try:
-    import torch
-except ImportError:
-    pass
+import torch
 
 
 def mcar(

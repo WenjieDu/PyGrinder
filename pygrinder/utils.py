@@ -3,16 +3,12 @@ Utility functions for pygrinder.
 """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>
-# License: GPL-v3
+# License: BSD-3-Clause
 
 from typing import Union
 
 import numpy as np
-
-try:
-    import torch
-except ImportError:
-    pass
+import torch
 
 
 def cal_missing_rate(X: Union[np.ndarray, torch.Tensor]) -> float:

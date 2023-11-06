@@ -3,17 +3,13 @@ Corrupt data by adding missing values to it with MAR (missing at random) pattern
 """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>
-# License: GLP-v3
+# License: BSD-3-Clause
 
 from typing import Union, Tuple
 
 import numpy as np
+import torch
 from scipy import optimize
-
-try:
-    import torch
-except ImportError:
-    pass
 
 
 def mar_logistic(

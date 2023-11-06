@@ -13,7 +13,7 @@ Welcome to PyGrinder's docs!
 .. image:: https://img.shields.io/github/v/release/wenjiedu/pygrinder?color=EE781F&include_prereleases&label=Release&logo=github&logoColor=white
    :alt: the latest release version
    :target: https://img.shields.io/github/v/release/wenjiedu/pygrinder?color=EE781F&include_prereleases&label=Release&logo=github&logoColor=white
-.. image:: https://img.shields.io/badge/License-GPL--v3-E9BB41?logo=opensourceinitiative&logoColor=white
+.. image:: https://img.shields.io/badge/License-BSD--3-E9BB41?logo=opensourceinitiative&logoColor=white
    :alt: License
    :target: https://github.com/WenjieDu/PyGrinder/blob/main/LICENSE
 .. image:: https://img.shields.io/github/actions/workflow/status/wenjiedu/pygrinder/testing_ci.yml?logo=github&color=C8D8E1&label=CI

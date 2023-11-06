@@ -3,7 +3,7 @@ PyGrinder: a Python toolkit for grinding data beans into the incomplete.
 """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>
-# License: GLP-v3
+# License: BSD-3-Clause
 
 # PyGrinder version
 #
@@ -21,7 +21,7 @@ PyGrinder: a Python toolkit for grinding data beans into the incomplete.
 #
 # Dev branch marker is: 'X.Y.dev' or 'X.Y.devN' where N is an integer.
 # 'X.Y.dev0' is the canonical version of 'X.Y.dev'
-__version__ = "0.1.1"
+__version__ = "0.2"
 
 try:
     from pygrinder.missing_completely_at_random import mcar, mcar_little_test
