@@ -8,11 +8,7 @@ Corrupt data by adding missing values to it with MCAR (missing completely at ran
 from typing import Union, Tuple
 
 import numpy as np
-
-try:
-    import torch
-except ImportError:
-    pass
+import torch
 
 
 def mcar(

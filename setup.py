@@ -36,6 +36,7 @@ setup(
         "numpy",
         "scipy",
         "pandas",
+        "torch",
     ],
     setup_requires=["setuptools>=38.6.0"],
     classifiers=[
