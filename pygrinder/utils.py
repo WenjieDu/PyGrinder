@@ -8,11 +8,7 @@ Utility functions for pygrinder.
 from typing import Union
 
 import numpy as np
-
-try:
-    import torch
-except ImportError:
-    pass
+import torch
 
 
 def cal_missing_rate(X: Union[np.ndarray, torch.Tensor]) -> float:

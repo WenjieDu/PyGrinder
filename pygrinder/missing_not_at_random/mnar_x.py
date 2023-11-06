@@ -8,11 +8,7 @@ Corrupt data by adding missing values to it with MNAR (missing not at random) pa
 from typing import Optional, Union, Tuple
 
 import numpy as np
-
-try:
-    import torch
-except ImportError:
-    pass
+import torch
 
 
 def mnar_x(
