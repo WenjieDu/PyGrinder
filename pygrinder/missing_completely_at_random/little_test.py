@@ -14,7 +14,22 @@ def mcar_little_test(X: Union[pd.DataFrame, np.ndarray]) -> float:
     Notes
     -----
     This implementation is inspired by
-    https://github.com/RianneSchouten/pyampute/blob/master/pyampute/exploration/mcar_statistical_tests.py
+    https://github.com/RianneSchouten/pyampute/blob/master/pyampute/exploration/mcar_statistical_tests.py.
+    Note that this function should be used carefully. Rejecting the null hypothesis may not always mean that
+    the data is not MCAR, nor is accepting the null hypothesis a guarantee that the data is MCAR.
+
+    Parameters
+    ----------
+    X:
+        Time series data containing missing values that should be in shape of [n_steps, n_features],
+        i.e. have 2 dimensions.
+
+    Returns
+    -------
+    p_value:
+        The p-value of a chi-square hypothesis test.
+        Null hypothesis: the time series is missing completely at random (MCAR).
+
     """
 
     if isinstance(X, np.ndarray):
