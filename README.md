@@ -14,14 +14,29 @@
     <a href="https://github.com/WenjieDu/PyGrinder/blob/main/LICENSE">
         <img alt="BSD-3 license" src="https://img.shields.io/badge/License-BSD--3-E9BB41?logo=opensourceinitiative&logoColor=white">
     </a>
-    <a  href='https://github.com/WenjieDu/PyGrinder/actions/workflows/testing_ci.yml'>
-        <img alt='GitHub Testing' src='https://img.shields.io/github/actions/workflow/status/wenjiedu/PyGrinder/testing_ci.yml?logo=github&color=C8D8E1&label=CI'>
+    <a href="https://github.com/WenjieDu/PyPOTS/blob/main/README.md#-community">
+        <img alt="Community" src="https://img.shields.io/badge/join_us-community!-C8A062">
+    </a>
+    <a href="https://github.com/WenjieDu/PyGrinder/graphs/contributors">
+        <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/wenjiedu/pygrinder?color=D8E699&label=Contributors&logo=GitHub">
+    </a>
+    <a href="https://star-history.com/#wenjiedu/pygrinder">
+        <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/wenjiedu/pygrinder?logo=Github&color=6BB392&label=Stars">
+    </a>
+    <a href="https://github.com/WenjieDu/PyGrinder/network/members">
+        <img alt="GitHub Repo forks" src="https://img.shields.io/github/forks/wenjiedu/pygrinder?logo=Github&color=91B821&label=Forks">
     </a>
     <a href="https://codeclimate.com/github/WenjieDu/PyGrinder">
         <img alt="Code Climate maintainability" src="https://img.shields.io/codeclimate/maintainability-percentage/WenjieDu/PyGrinder?color=3C7699&label=Maintainability&logo=codeclimate">
     </a>
     <a href='https://coveralls.io/github/WenjieDu/PyGrinder'>
         <img alt='Coveralls report' src='https://img.shields.io/coverallsCoverage/github/WenjieDu/PyGrinder?branch=main&logo=coveralls&color=75C1C4&label=Coverage'>
+    </a>
+    <a  href='https://github.com/WenjieDu/PyGrinder/actions/workflows/testing_ci.yml'>
+        <img alt='GitHub Testing' src='https://img.shields.io/github/actions/workflow/status/wenjiedu/PyGrinder/testing_ci.yml?logo=github&color=C8D8E1&label=CI'>
+    </a>
+    <a href="https://arxiv.org/abs/2305.18811">
+        <img alt="arXiv DOI" src="https://img.shields.io/badge/DOI-10.48550/arXiv.2305.18811-F8F7F0">
     </a>
     <a href="https://anaconda.org/conda-forge/PyGrinder">
         <img alt="Conda downloads" src="https://img.shields.io/endpoint?url=https://pypots.com/figs/downloads_badges/conda_pygrinder_downloads.json">
@@ -32,7 +47,11 @@
 </p>
 
 <a href='https://github.com/WenjieDu/PyPOTS'><img src='https://pypots.com/figs/pypots_logos/PyPOTS_logo_FFBG.svg?sanitize=true' width='160' align='left' /></a>
-PyGrinder is a part of [PyPOTS project](https://github.com/WenjieDu/PyPOTS) (a Python toolbox for data mining on
+PyGrinder is a part of 
+<a href="https://github.com/WenjieDu/PyPOTS">
+PyPOTS <img align="center" src="https://img.shields.io/github/stars/WenjieDu/PyPOTS?style=social">
+</a>
+(a Python toolbox for data mining on
 Partially-Observed Time Series), was called PyCorruptor and separated from PyPOTS for decoupling missingness-creating functionalities from
 learning algorithms.
 
