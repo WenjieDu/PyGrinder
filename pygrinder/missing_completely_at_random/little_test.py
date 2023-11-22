@@ -26,7 +26,7 @@ def mcar_little_test(X: Union[pd.DataFrame, np.ndarray]) -> float:
 
     Returns
     -------
-    p_value:
+    p_value: float
         The p-value of a chi-square hypothesis test.
         Null hypothesis: the time series is missing completely at random (MCAR).
 
