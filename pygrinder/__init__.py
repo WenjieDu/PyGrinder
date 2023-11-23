@@ -23,16 +23,13 @@ PyGrinder: a Python toolkit for grinding data beans into the incomplete.
 # 'X.Y.dev0' is the canonical version of 'X.Y.dev'
 __version__ = "0.2"
 
-try:
-    from pygrinder.missing_completely_at_random import mcar, mcar_little_test
-    from pygrinder.missing_at_random import mar_logistic
-    from pygrinder.missing_not_at_random import mnar_x, mnar_t
-    from pygrinder.utils import (
-        cal_missing_rate,
-        masked_fill,
-    )
-except Exception as e:
-    print(e)
+from .missing_completely_at_random import mcar, mcar_little_test
+from .missing_at_random import mar_logistic
+from .missing_not_at_random import mnar_x, mnar_t
+from .utils import (
+    cal_missing_rate,
+    masked_fill,
+)
 
 __all__ = [
     "__version__",
