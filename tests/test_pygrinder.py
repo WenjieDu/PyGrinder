@@ -8,6 +8,7 @@ PyGrinder test cases.
 import unittest
 
 import numpy as np
+import torch
 
 from pygrinder import (
     mcar,
@@ -20,16 +21,19 @@ from pygrinder import (
 )
 
 DEFAULT_MISSING_RATE = 0.1
-NAN = 1
+NaN = 1
 
 
 class TestPyGrinder(unittest.TestCase):
     def test_0_mcar(self):
         X = np.random.randn(128, 10, 36)
         X_intact, X_with_missing, missing_mask, indicating_mask = mcar(
-            X, p=DEFAULT_MISSING_RATE, nan=NAN
+            X,
+            p=DEFAULT_MISSING_RATE,
+            return_masks=True,
+            nan=NaN,
         )
-        assert np.sum(X_with_missing[(1 - missing_mask).astype(bool)]) == NAN * np.sum(
+        assert np.sum(X_with_missing[(1 - missing_mask).astype(bool)]) == NaN * np.sum(
             1 - missing_mask
         )
         X_with_missing = masked_fill(X_with_missing, 1 - missing_mask, np.nan)
@@ -38,38 +42,67 @@ class TestPyGrinder(unittest.TestCase):
             round(actual_missing_rate, 1) == DEFAULT_MISSING_RATE
         ), f"Actual missing rate is {actual_missing_rate}, not given {DEFAULT_MISSING_RATE}"
         test_pvalue = mcar_little_test(X_with_missing.reshape(128, -1))
-        print(f"MCAR Little test p_value: {test_pvalue}")
+        print(f"MCAR Little test p_value for MCAR_return_masks: {test_pvalue}")
+
+        # only add missing values into X
+        X = torch.randn(128, 10, 36)
+        X_with_nan = mcar(X, p=DEFAULT_MISSING_RATE, return_masks=False)
+        test_pvalue = mcar_little_test(X_with_nan.numpy().reshape(128, -1))
+        print(f"MCAR Little test p_value for MCAR_not_return_masks: {test_pvalue}")
 
     def test_1_mar(self):
         X = np.random.randn(128, 36)
         X_intact, X_with_missing, missing_mask, indicating_mask = mar_logistic(
-            X, obs_rate=0.1, missing_rate=0.2
+            X, obs_rate=0.1, missing_rate=0.2, return_masks=True, nan=NaN
         )
         X_with_missing = masked_fill(X_with_missing, 1 - missing_mask, np.nan)
         actual_missing_rate = cal_missing_rate(X_with_missing)
         assert (
             round(actual_missing_rate, 1) > 0
         ), f"Actual missing rate is {actual_missing_rate}"
+        test_pvalue = mcar_little_test(X_with_missing.reshape(128, -1))
+        print(f"MCAR Little test p_value for MAR_return_masks: {test_pvalue}")
+
+        # only add missing values into X
+        X = torch.randn(128, 36)
+        X_with_nan = mar_logistic(X, obs_rate=0.1, missing_rate=0.2, return_masks=False)
+        test_pvalue = mcar_little_test(X_with_nan.numpy().reshape(128, -1))
+        print(f"MCAR Little test p_value for MAR_not_return_masks: {test_pvalue}")
 
     def test_2_mnar(self):
         X = np.random.randn(128, 10, 36)
 
         # mnar_x
         X_intact, X_with_missing, missing_mask, indicating_mask = mnar_x(
-            X, offset=0, nan=NAN
+            X, offset=0, return_masks=True, nan=NaN
         )
         X_with_missing = masked_fill(X_with_missing, 1 - missing_mask, np.nan)
         actual_missing_rate = cal_missing_rate(X_with_missing)
         assert (
             round(actual_missing_rate, 1) > 0
         ), f"Actual missing rate is {actual_missing_rate}"
+        test_pvalue = mcar_little_test(X_with_missing.reshape(128, -1))
+        print(f"MCAR Little test p_value for MNAR_X_return_masks: {test_pvalue}")
 
         # mnar_t
         X_intact, X_with_missing, missing_mask, indicating_mask = mnar_t(
-            X, cycle=20, pos=10, scale=3, nan=NAN
+            X, cycle=20, pos=10, scale=3, return_masks=True, nan=NaN
         )
         X_with_missing = masked_fill(X_with_missing, 1 - missing_mask, np.nan)
         actual_missing_rate = cal_missing_rate(X_with_missing)
         assert (
             round(actual_missing_rate, 1) > 0
         ), f"Actual missing rate is {actual_missing_rate}"
+        test_pvalue = mcar_little_test(X_with_missing.reshape(128, -1))
+        print(f"MCAR Little test p_value for MNAR_T_return_masks: {test_pvalue}")
+
+        # only add missing values into X
+        # mnar_x
+        X = torch.randn(128, 10, 36)
+        X_with_nan = mnar_x(X, offset=0, return_masks=False)
+        test_pvalue = mcar_little_test(X_with_nan.numpy().reshape(128, -1))
+        print(f"MCAR Little test p_value for MNAR_X_not_return_masks: {test_pvalue}")
+        # mnar_t
+        X_with_nan = mnar_t(X, cycle=20, pos=10, scale=3, return_masks=False)
+        test_pvalue = mcar_little_test(X_with_nan.numpy().reshape(128, -1))
+        print(f"MCAR Little test p_value for MNAR_T_not_return_masks: {test_pvalue}")
