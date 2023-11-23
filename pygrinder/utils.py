@@ -65,6 +65,10 @@ def masked_fill(
         Mask filled X.
 
     """
+    if isinstance(X, list):
+        X = np.asarray(X)
+        mask = np.asarray(mask)
+
     assert X.shape == mask.shape, (
         "Shapes of X and mask must match, "
         f"but X.shape={X.shape}, mask.shape={mask.shape}"
@@ -72,10 +76,6 @@ def masked_fill(
     assert isinstance(X, type(mask)), (
         "Data types of X and mask must match, " f"but got {type(X)} and {type(mask)}"
     )
-
-    if isinstance(X, list):
-        X = np.asarray(X)
-        mask = np.asarray(mask)
 
     if isinstance(X, np.ndarray):
         filled_X = X.copy()
