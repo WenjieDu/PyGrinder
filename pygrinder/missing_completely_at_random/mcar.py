@@ -5,7 +5,7 @@ Corrupt data by adding missing values to it with MCAR (missing completely at ran
 # Created by Wenjie Du <wenjay.du@gmail.com>
 # License: BSD-3-Clause
 
-from typing import Union, Tuple, overload, Literal
+from typing import Union, Tuple, overload
 
 import numpy as np
 import torch
@@ -15,7 +15,7 @@ import torch
 def mcar(
     X: Union[np.ndarray, torch.Tensor],
     p: float,
-    return_masks: Literal[True] = True,
+    return_masks: bool = True,
     nan: Union[float, int] = 0,
 ) -> Union[Tuple[np.ndarray, ...], Tuple[torch.Tensor, ...], np.ndarray, torch.Tensor]:
     raise NotImplementedError()
@@ -25,7 +25,7 @@ def mcar(
 def mcar(
     X: Union[np.ndarray, torch.Tensor],
     p: float,
-    return_masks: Literal[False] = False,
+    return_masks: bool = False,
     nan: Union[float, int] = 0,
 ) -> Union[Tuple[np.ndarray, ...], Tuple[torch.Tensor, ...], np.ndarray, torch.Tensor]:
     raise NotImplementedError()

@@ -5,7 +5,7 @@ Corrupt data by adding missing values to it with MNAR (missing not at random) pa
 # Created by Jun Wang <jwangfx@connect.ust.hk> and Wenjie Du <wenjay.du@gmail.com>
 # License: BSD-3-Clause
 
-from typing import Optional, Union, Tuple, overload, Literal
+from typing import Optional, Union, Tuple, overload
 
 import numpy as np
 import torch
@@ -17,7 +17,7 @@ def mnar_t(
     cycle: float,
     pos: float,
     scale: float,
-    return_masks: Literal[True] = True,
+    return_masks: bool = True,
     nan: Union[float, int] = 0,
 ) -> Union[Tuple[np.ndarray, ...], Tuple[torch.Tensor, ...], np.ndarray, torch.Tensor]:
     raise NotImplementedError()
@@ -29,7 +29,7 @@ def mnar_t(
     cycle: float,
     pos: float,
     scale: float,
-    return_masks: Literal[False] = False,
+    return_masks: bool = False,
     nan: Union[float, int] = 0,
 ) -> Union[Tuple[np.ndarray, ...], Tuple[torch.Tensor, ...], np.ndarray, torch.Tensor]:
     raise NotImplementedError()
