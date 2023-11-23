@@ -36,6 +36,21 @@ class TestPyGrinder(unittest.TestCase):
         assert np.sum(X_with_missing[(1 - missing_mask).astype(bool)]) == NaN * np.sum(
             1 - missing_mask
         )
+        # as list
+        list_X_with_missing = masked_fill(
+            X_with_missing.tolist(),
+            (1 - missing_mask).tolist(),
+            np.nan,
+        ).tolist()
+        _ = cal_missing_rate(list_X_with_missing)
+        # as torch tensor
+        tensor_X_with_missing = masked_fill(
+            torch.from_numpy(X_with_missing),
+            torch.from_numpy(1 - missing_mask),
+            torch.nan,
+        )
+        _ = cal_missing_rate(tensor_X_with_missing)
+        # as numpy array
         X_with_missing = masked_fill(X_with_missing, 1 - missing_mask, np.nan)
         actual_missing_rate = cal_missing_rate(X_with_missing)
         assert (
