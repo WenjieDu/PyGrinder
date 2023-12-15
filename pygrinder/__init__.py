@@ -21,14 +21,17 @@ PyGrinder: a Python toolkit for grinding data beans into the incomplete.
 #
 # Dev branch marker is: 'X.Y.dev' or 'X.Y.devN' where N is an integer.
 # 'X.Y.dev0' is the canonical version of 'X.Y.dev'
-__version__ = "0.3"
+__version__ = "0.4"
 
-from .missing_completely_at_random import mcar, mcar_little_test
 from .missing_at_random import mar_logistic
+from .missing_completely_at_random import mcar, mcar_little_test
 from .missing_not_at_random import mnar_x, mnar_t
 from .utils import (
-    cal_missing_rate,
+    calc_missing_rate,
     masked_fill,
+    fill_and_get_mask,
+    fill_and_get_mask_torch,
+    fill_and_get_mask_numpy,
 )
 
 __all__ = [
@@ -38,6 +41,9 @@ __all__ = [
     "mar_logistic",
     "mnar_x",
     "mnar_t",
-    "cal_missing_rate",
+    "calc_missing_rate",
     "masked_fill",
+    "fill_and_get_mask",
+    "fill_and_get_mask_torch",
+    "fill_and_get_mask_numpy",
 ]
