@@ -17,7 +17,8 @@ from pygrinder import (
     mnar_x,
     mnar_t,
     masked_fill,
-    cal_missing_rate,
+    calc_missing_rate,
+    fill_and_get_mask,
 )
 
 DEFAULT_MISSING_RATE = 0.1
@@ -27,12 +28,12 @@ NaN = 1
 class TestPyGrinder(unittest.TestCase):
     def test_0_mcar(self):
         X = np.random.randn(128, 10, 36)
-        X_intact, X_with_missing, missing_mask, indicating_mask = mcar(
+        X_with_missing = mcar(
             X,
             p=DEFAULT_MISSING_RATE,
-            return_masks=True,
-            nan=NaN,
         )
+        X_with_missing, missing_mask = fill_and_get_mask(X_with_missing, NaN)
+
         assert np.sum(X_with_missing[(1 - missing_mask).astype(bool)]) == NaN * np.sum(
             1 - missing_mask
         )
@@ -42,17 +43,17 @@ class TestPyGrinder(unittest.TestCase):
             (1 - missing_mask).tolist(),
             np.nan,
         ).tolist()
-        _ = cal_missing_rate(list_X_with_missing)
+        _ = calc_missing_rate(list_X_with_missing)
         # as torch tensor
         tensor_X_with_missing = masked_fill(
             torch.from_numpy(X_with_missing),
             torch.from_numpy(1 - missing_mask),
             torch.nan,
         )
-        _ = cal_missing_rate(tensor_X_with_missing)
+        _ = calc_missing_rate(tensor_X_with_missing)
         # as numpy array
         X_with_missing = masked_fill(X_with_missing, 1 - missing_mask, np.nan)
-        actual_missing_rate = cal_missing_rate(X_with_missing)
+        actual_missing_rate = calc_missing_rate(X_with_missing)
         assert (
             round(actual_missing_rate, 1) == DEFAULT_MISSING_RATE
         ), f"Actual missing rate is {actual_missing_rate}, not given {DEFAULT_MISSING_RATE}"
@@ -61,17 +62,16 @@ class TestPyGrinder(unittest.TestCase):
 
         # only add missing values into X
         X = torch.randn(128, 10, 36)
-        X_with_nan = mcar(X, p=DEFAULT_MISSING_RATE, return_masks=False)
+        X_with_nan = mcar(X, p=DEFAULT_MISSING_RATE)
         test_pvalue = mcar_little_test(X_with_nan.numpy().reshape(128, -1))
         print(f"MCAR Little test p_value for MCAR_not_return_masks: {test_pvalue}")
 
     def test_1_mar(self):
         X = np.random.randn(128, 36)
-        X_intact, X_with_missing, missing_mask, indicating_mask = mar_logistic(
-            X, obs_rate=0.1, missing_rate=0.2, return_masks=True, nan=NaN
-        )
+        X_with_missing = mar_logistic(X, obs_rate=0.1, missing_rate=0.2)
+        X_with_missing, missing_mask = fill_and_get_mask(X_with_missing, NaN)
         X_with_missing = masked_fill(X_with_missing, 1 - missing_mask, np.nan)
-        actual_missing_rate = cal_missing_rate(X_with_missing)
+        actual_missing_rate = calc_missing_rate(X_with_missing)
         assert (
             round(actual_missing_rate, 1) > 0
         ), f"Actual missing rate is {actual_missing_rate}"
@@ -80,7 +80,7 @@ class TestPyGrinder(unittest.TestCase):
 
         # only add missing values into X
         X = torch.randn(128, 36)
-        X_with_nan = mar_logistic(X, obs_rate=0.1, missing_rate=0.2, return_masks=False)
+        X_with_nan = mar_logistic(X, obs_rate=0.1, missing_rate=0.2)
         test_pvalue = mcar_little_test(X_with_nan.numpy().reshape(128, -1))
         print(f"MCAR Little test p_value for MAR_not_return_masks: {test_pvalue}")
 
@@ -88,11 +88,10 @@ class TestPyGrinder(unittest.TestCase):
         X = np.random.randn(128, 10, 36)
 
         # mnar_x
-        X_intact, X_with_missing, missing_mask, indicating_mask = mnar_x(
-            X, offset=0, return_masks=True, nan=NaN
-        )
+        X_with_missing = mnar_x(X, offset=0)
+        X_with_missing, missing_mask = fill_and_get_mask(X_with_missing, NaN)
         X_with_missing = masked_fill(X_with_missing, 1 - missing_mask, np.nan)
-        actual_missing_rate = cal_missing_rate(X_with_missing)
+        actual_missing_rate = calc_missing_rate(X_with_missing)
         assert (
             round(actual_missing_rate, 1) > 0
         ), f"Actual missing rate is {actual_missing_rate}"
@@ -100,11 +99,10 @@ class TestPyGrinder(unittest.TestCase):
         print(f"MCAR Little test p_value for MNAR_X_return_masks: {test_pvalue}")
 
         # mnar_t
-        X_intact, X_with_missing, missing_mask, indicating_mask = mnar_t(
-            X, cycle=20, pos=10, scale=3, return_masks=True, nan=NaN
-        )
+        X_with_missing = mnar_t(X, cycle=20, pos=10, scale=3)
+        X_with_missing, missing_mask = fill_and_get_mask(X_with_missing, NaN)
         X_with_missing = masked_fill(X_with_missing, 1 - missing_mask, np.nan)
-        actual_missing_rate = cal_missing_rate(X_with_missing)
+        actual_missing_rate = calc_missing_rate(X_with_missing)
         assert (
             round(actual_missing_rate, 1) > 0
         ), f"Actual missing rate is {actual_missing_rate}"
@@ -114,10 +112,10 @@ class TestPyGrinder(unittest.TestCase):
         # only add missing values into X
         # mnar_x
         X = torch.randn(128, 10, 36)
-        X_with_nan = mnar_x(X, offset=0, return_masks=False)
+        X_with_nan = mnar_x(X, offset=0)
         test_pvalue = mcar_little_test(X_with_nan.numpy().reshape(128, -1))
         print(f"MCAR Little test p_value for MNAR_X_not_return_masks: {test_pvalue}")
         # mnar_t
-        X_with_nan = mnar_t(X, cycle=20, pos=10, scale=3, return_masks=False)
+        X_with_nan = mnar_t(X, cycle=20, pos=10, scale=3)
         test_pvalue = mcar_little_test(X_with_nan.numpy().reshape(128, -1))
         print(f"MCAR Little test p_value for MNAR_T_not_return_masks: {test_pvalue}")

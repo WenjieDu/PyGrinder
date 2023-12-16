@@ -47,7 +47,7 @@
 </p>
 
 <a href='https://github.com/WenjieDu/PyPOTS'><img src='https://pypots.com/figs/pypots_logos/PyPOTS_logo_FFBG.svg?sanitize=true' width='160' align='left' /></a>
-PyGrinder is a part of 
+PyGrinder is a part of
 <a href="https://github.com/WenjieDu/PyPOTS">
 PyPOTS <img align="center" src="https://img.shields.io/github/stars/WenjieDu/PyPOTS?style=social">
 </a>
@@ -74,20 +74,20 @@ or install from source code:
 
 ```python
 import numpy as np
-import pygrinder
+from pygrinder import mcar, mar_logistic, mnar_x, mnar_t
 
 # given a time-series dataset with 128 samples, each sample with 10 time steps and 36 data features
 ts_dataset = np.random.randn(128, 10, 36)
 
 # grind the dataset with MCAR pattern, 10% missing probability, and using 0 to fill missing values
-X_intact, X, missing_mask, indicating_mask = pygrinder.mcar(ts_dataset, p=0.1, nan=0)
+X_with_mcar_data = mcar(ts_dataset, p=0.1)
 
 # grind the dataset with MAR pattern
-X_intact, X, missing_mask, indicating_mask = pygrinder.mar_logistic(ts_dataset[:, 0, :], obs_rate=0.1, missing_rate=0.1, nan=0)
+X_with_mar_data = mar_logistic(ts_dataset[:, 0, :], obs_rate=0.1, missing_rate=0.1)
 
 # grind the dataset with MNAR pattern
-X_intact, X, missing_mask, indicating_mask = pygrinder.mnar_x(ts_dataset, offset=0.1, nan=0)
-X_intact, X, missing_mask, indicating_mask = pygrinder.mnar_t(ts_dataset, cycle=20, pos = 10, scale = 3, nan=0)
+X_with_mnar_x_data = mnar_x(ts_dataset, offset=0.1)
+X_with_mnar_t_data = mnar_t(ts_dataset, cycle=20, pos = 10, scale = 3)
 ```
 
 
