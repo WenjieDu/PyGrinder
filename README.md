@@ -1,4 +1,4 @@
-<a href='https://github.com/WenjieDu/PyGrinder'><img src='https://pypots.com/figs/pypots_logos/PyGrinder_logo_FFBG.svg?sanitize=true' width='200' align='right' /></a>
+<a href='https://github.com/WenjieDu/PyGrinder'><img src='https://pypots.com/figs/pypots_logos/PyGrinder/logo_FFBG.svg' width='200' align='right' /></a>
 
 <h2 align="center">Welcome to PyGrinder</h2>
 
@@ -21,10 +21,10 @@
         <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/wenjiedu/pygrinder?color=D8E699&label=Contributors&logo=GitHub">
     </a>
     <a href="https://star-history.com/#wenjiedu/pygrinder">
-        <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/wenjiedu/pygrinder?logo=Github&color=6BB392&label=Stars">
+        <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/wenjiedu/pygrinder?logo=None&color=6BB392&label=%E2%98%85%20Stars">
     </a>
     <a href="https://github.com/WenjieDu/PyGrinder/network/members">
-        <img alt="GitHub Repo forks" src="https://img.shields.io/github/forks/wenjiedu/pygrinder?logo=Github&color=91B821&label=Forks">
+        <img alt="GitHub Repo forks" src="https://img.shields.io/github/forks/wenjiedu/pygrinder?logo=forgejo&logoColor=black&label=Forks">
     </a>
     <a href="https://codeclimate.com/github/WenjieDu/PyGrinder">
         <img alt="Code Climate maintainability" src="https://img.shields.io/codeclimate/maintainability-percentage/WenjieDu/PyGrinder?color=3C7699&label=Maintainability&logo=codeclimate">
@@ -46,7 +46,7 @@
     </a>
 </p>
 
-<a href='https://github.com/WenjieDu/PyPOTS'><img src='https://pypots.com/figs/pypots_logos/PyPOTS_logo_FFBG.svg?sanitize=true' width='160' align='left' /></a>
+<a href='https://github.com/WenjieDu/PyPOTS'><img src='https://pypots.com/figs/pypots_logos/PyPOTS/logo_FFBG.svg' width='160' align='left' /></a>
 PyGrinder is a part of
 <a href="https://github.com/WenjieDu/PyPOTS">
 PyPOTS <img align="center" src="https://img.shields.io/github/stars/WenjieDu/PyPOTS?style=social">

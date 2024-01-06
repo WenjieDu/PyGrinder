@@ -1,6 +1,6 @@
 Welcome to PyGrinder's docs!
 =======================================
-.. image:: https://pypots.com/figs/pypots_logos/PyGrinder_logo_FFBG.svg
+.. image:: https://pypots.com/figs/pypots_logos/PyGrinder/logo_FFBG.svg
    :height: 300
    :align: right
    :target: https://github.com/WenjieDu/PyGrinder
