@@ -98,7 +98,7 @@ and we are pursuing to publish it in prestigious academic venues, e.g. JMLR (tra
 please cite PyPOTS project as below and 🌟star this repository to make others notice this library. 🤗 Thank you!
 
 <p align="center">
-<a href="https://pypots.com/ecosystem/">
+<a href="https://github.com/WenjieDu/PyPOTS">
     <img src="https://pypots.com/figs/pypots_logos/Ecosystem/PyPOTS_Ecosystem_Pipeline.png" width="95%"/>
 </a>
 </p>

@@ -16,6 +16,7 @@ from pygrinder import (
     mar_logistic,
     mnar_x,
     mnar_t,
+    rdo,
     masked_fill,
     calc_missing_rate,
     fill_and_get_mask,
@@ -119,3 +120,21 @@ class TestPyGrinder(unittest.TestCase):
         X_with_nan = mnar_t(X, cycle=20, pos=10, scale=3)
         test_pvalue = mcar_little_test(X_with_nan.numpy().reshape(128, -1))
         print(f"MCAR Little test p_value for MNAR_T_not_return_masks: {test_pvalue}")
+
+    def test_3_rdo(self):
+        X = np.random.randn(128, 10, 36)
+        X_with_missing = mcar(
+            X,
+            p=DEFAULT_MISSING_RATE,
+        )
+        n_observations = (~np.isnan(X_with_missing)).sum()
+        n_rdo = round(DEFAULT_MISSING_RATE * n_observations)
+
+        X_with_rdo = rdo(X_with_missing, p=DEFAULT_MISSING_RATE)
+        n_left_observations = (~np.isnan(X_with_rdo)).sum()
+        assert n_left_observations == n_observations - n_rdo
+
+        X_with_missing = torch.from_numpy(X_with_missing)
+        X_with_rdo = rdo(X_with_missing, p=DEFAULT_MISSING_RATE)
+        n_left_observations = (~torch.isnan(X_with_rdo)).sum()
+        assert n_left_observations == n_observations - n_rdo
