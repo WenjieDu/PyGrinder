@@ -15,6 +15,8 @@ def _mcar_numpy(
     X: np.ndarray,
     p: float,
 ) -> np.ndarray:
+    assert 0 < p < 1, f"p must be in range (0, 1), but got {p}"
+
     # clone X to ensure values of X out of this function not being affected
     X = np.copy(X)
     mcar_missing_mask = np.asarray(np.random.rand(np.prod(X.shape)) < p)
@@ -27,6 +29,8 @@ def _mcar_torch(
     X: torch.Tensor,
     p: float,
 ) -> torch.Tensor:
+    assert 0 < p < 1, f"p must be in range (0, 1), but got {p}"
+
     # clone X to ensure values of X out of this function not being affected
     X = torch.clone(X)
     mcar_missing_mask = torch.rand(X.shape) < p
@@ -45,7 +49,7 @@ def mcar(
     X :
         Data vector. If X has any missing values, they should be numpy.nan.
 
-    p : float, in (0,1),
+    p :
         The probability that values may be masked as missing completely at random.
         Note that the values are randomly selected no matter if they are originally missing or observed.
         If the selected values are originally missing, they will be kept as missing.
@@ -57,11 +61,13 @@ def mcar(
 
     Returns
     -------
-    corrupted_X : array-like
+    corrupted_X :
         Original X with artificial missing values.
         Both originally-missing and artificially-missing values are left as NaN.
 
     """
+    assert 0 < p < 1, f"p must be in range (0, 1), but got {p}"
+
     if isinstance(X, list):
         X = np.asarray(X)
 

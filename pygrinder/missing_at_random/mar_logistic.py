@@ -102,8 +102,8 @@ def mar_logistic(
 
     Parameters
     ----------
-    X : shape of [n_steps, n_features]
-        A time series data vector without any missing data.
+    X :
+        A time series data vector without any missing data. Shape of [n_steps, n_features].
 
     obs_rate :
         The proportion of variables without missing values that will be used for fitting the logistic masking model.
@@ -113,7 +113,7 @@ def mar_logistic(
 
     Returns
     -------
-    corrupted_X : array-like
+    corrupted_X :
         Original X with artificial missing values.
         Both originally-missing and artificially-missing values are left as NaN.
 

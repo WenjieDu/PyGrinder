@@ -15,6 +15,8 @@ def _rdo_numpy(
     X: np.ndarray,
     p: float,
 ) -> np.ndarray:
+    assert 0 < p < 1, f"p must be in range (0, 1), but got {p}"
+
     # clone X to ensure values of X out of this function not being affected
     X = np.copy(X)
     ori_shape = X.shape
@@ -34,6 +36,8 @@ def _rdo_torch(
     X: torch.Tensor,
     p: float,
 ) -> torch.Tensor:
+    assert 0 < p < 1, f"p must be in range (0, 1), but got {p}"
+
     # clone X to ensure values of X out of this function not being affected
     X = torch.clone(X)
     ori_shape = X.shape
@@ -60,7 +64,7 @@ def rdo(
     X :
         Data vector. If X has any missing values, they should be numpy.nan.
 
-    p : float, in (0,1),
+    p :
         The proportion of the observed values that will be randomly masked as missing.
         RDO (randomly drop observations) will randomly select values from the observed values to be masked as missing.
         The number of selected observations is determined by `p` and the total number of observed values in X,
@@ -70,11 +74,13 @@ def rdo(
 
     Returns
     -------
-    corrupted_X : array-like
+    corrupted_X :
         Original X with artificial missing values.
         Both originally-missing and artificially-missing values are left as NaN.
 
     """
+    assert 0 < p < 1, f"p must be in range (0, 1), but got {p}"
+
     if isinstance(X, list):
         X = np.asarray(X)
 

@@ -78,11 +78,12 @@ def mnar_t(
 
     Returns
     -------
-    corrupted_X : array-like
+    corrupted_X :
         Original X with artificial missing values.
         Both originally-missing and artificially-missing values are left as NaN.
 
     """
+
     if isinstance(X, list):
         X = np.asarray(X)
 
