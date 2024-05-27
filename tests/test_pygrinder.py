@@ -136,5 +136,5 @@ class TestPyGrinder(unittest.TestCase):
 
         X_with_missing = torch.from_numpy(X_with_missing)
         X_with_rdo = rdo(X_with_missing, p=DEFAULT_MISSING_RATE)
-        n_left_observations = (~np.isnan(X_with_rdo)).sum()
+        n_left_observations = (~torch.isnan(X_with_rdo)).sum()
         assert n_left_observations == n_observations - n_rdo
