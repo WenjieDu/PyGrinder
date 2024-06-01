@@ -17,6 +17,8 @@ from pygrinder import (
     mnar_x,
     mnar_t,
     rdo,
+    seq_missing,
+    block_missing,
     masked_fill,
     calc_missing_rate,
     fill_and_get_mask,
@@ -138,3 +140,58 @@ class TestPyGrinder(unittest.TestCase):
         X_with_rdo = rdo(X_with_missing, p=DEFAULT_MISSING_RATE)
         n_left_observations = (~torch.isnan(X_with_rdo)).sum()
         assert n_left_observations == n_observations - n_rdo
+
+    def test_4_seq_missing(self):
+        n_samples, n_steps, n_features = 128, 24, 10
+        X = np.random.randn(n_samples, n_steps, n_features)
+
+        p, seq_len = 1, 3
+        X_with_seq_missing = seq_missing(X, p, seq_len)
+        actual_missing_rate = calc_missing_rate(X_with_seq_missing)
+        assert round(actual_missing_rate, 5) == seq_len / n_steps * p
+
+        p, seq_len = 0.6, 3
+        X_with_seq_missing = seq_missing(X, p, seq_len)
+        actual_missing_rate = calc_missing_rate(X_with_seq_missing)
+        assert round(actual_missing_rate, 5) == seq_len / n_steps * p
+
+        X = torch.from_numpy(X)
+        p, seq_len = 0.6, 3
+        X_with_seq_missing = seq_missing(X, p, seq_len)
+        actual_missing_rate = calc_missing_rate(X_with_seq_missing)
+        assert round(actual_missing_rate, 5) == seq_len / n_steps * p
+
+    def test_4_block_missing(self):
+        n_samples, n_steps, n_features = 128, 24, 10
+        X = np.random.randn(n_samples, n_steps, n_features)
+
+        p, block_len, block_width = 1, 3, 2
+        X_with_block_missing = block_missing(X, p, block_len, block_width)
+        actual_missing_rate = calc_missing_rate(X_with_block_missing)
+        print(f"actual_missing_rate: {actual_missing_rate}")
+        # # assertion may not work because block missing may be overlap
+        # assert (
+        #     round(actual_missing_rate, 5)
+        #     == (block_len * block_width) / (n_steps * n_features) * p
+        # )
+
+        p, block_len, block_width = 0.6, 3, 2
+        X_with_block_missing = block_missing(X, p, block_len, block_width)
+        actual_missing_rate = calc_missing_rate(X_with_block_missing)
+        print(f"actual_missing_rate: {actual_missing_rate}")
+        # # assertion may not work because block missing may be overlap
+        # assert (
+        #     round(actual_missing_rate, 5)
+        #     == (block_len * block_width) / (n_steps * n_features) * p
+        # )
+
+        X = torch.from_numpy(X)
+        p, block_len, block_width = 0.6, 3, 2
+        X_with_block_missing = block_missing(X, p, block_len, block_width)
+        actual_missing_rate = calc_missing_rate(X_with_block_missing)
+        print(f"actual_missing_rate: {actual_missing_rate}")
+        # # assertion may not work because block missing may be overlap
+        # assert (
+        #     round(actual_missing_rate, 5)
+        #     == (block_len * block_width) / (n_steps * n_features) * p
+        # )
