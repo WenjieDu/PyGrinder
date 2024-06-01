@@ -125,7 +125,7 @@ def mar_logistic(
         corrupted_X = _mar_logistic_torch(X, missing_rate, obs_rate)
     else:
         raise TypeError(
-            "X must be type of list/numpy.ndarray/torch.Tensor, " f"but got {type(X)}"
+            f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}"
         )
 
     return corrupted_X

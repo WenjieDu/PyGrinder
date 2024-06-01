@@ -35,7 +35,7 @@ def calc_missing_rate(X: Union[np.ndarray, torch.Tensor]) -> float:
         originally_missing_rate = originally_missing_rate.item()
     else:
         raise TypeError(
-            "X must be type of list/numpy.ndarray/torch.Tensor, " f"but got {type(X)}"
+            f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}"
         )
 
     return originally_missing_rate
@@ -89,7 +89,7 @@ def masked_fill(
         filled_X[mask] = val
     else:
         raise TypeError(
-            "X must be type of list/numpy.ndarray/torch.Tensor, " f"but got {type(X)}"
+            f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}"
         )
 
     return filled_X
@@ -193,7 +193,7 @@ def fill_and_get_mask(
         X, missing_mask = fill_and_get_mask_torch(X, nan)
     else:
         raise TypeError(
-            "X must be type of list/numpy.ndarray/torch.Tensor, " f"but got {type(X)}"
+            f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}"
         )
 
     return X, missing_mask
