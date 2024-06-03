@@ -10,6 +10,7 @@ from typing import Union
 
 import numpy as np
 import torch
+from tsdb.utils.logging import logger
 
 
 def random_select_start_indices(
@@ -29,10 +30,13 @@ def random_select_start_indices(
         ]
         all_feature_start_indices = [i * n_steps for i in all_feature_indices]
 
+    if hit_rate > 1:
+        logger.warning(f"hit_rate={hit_rate} > 1")
+
     selected_feature_start_indices = np.random.choice(
         all_feature_start_indices,
         math.ceil(len(all_feature_start_indices) * hit_rate),
-        replace=False,
+        replace=hit_rate > 1,
     )
     selected_feature_start_indices = np.asarray(selected_feature_start_indices)
 
