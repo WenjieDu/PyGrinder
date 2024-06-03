@@ -10,12 +10,13 @@ from typing import Union
 
 import numpy as np
 import torch
+from tsdb.utils.logging import logger
 
 
 def random_select_start_indices(
     feature_idx,
     step_idx,
-    p,
+    hit_rate,
     n_samples,
     n_steps,
     n_features,
@@ -29,10 +30,13 @@ def random_select_start_indices(
         ]
         all_feature_start_indices = [i * n_steps for i in all_feature_indices]
 
+    if hit_rate > 1:
+        logger.warning(f"hit_rate={hit_rate} > 1")
+
     selected_feature_start_indices = np.random.choice(
         all_feature_start_indices,
-        math.ceil(len(all_feature_start_indices) * p),
-        replace=False,
+        math.ceil(len(all_feature_start_indices) * hit_rate),
+        replace=hit_rate > 1,
     )
     selected_feature_start_indices = np.asarray(selected_feature_start_indices)
 
@@ -57,8 +61,9 @@ def _seq_missing_numpy(
     X = np.copy(X)
 
     n_samples, n_steps, n_features = X.shape
+    hit_rate = p * n_steps / seq_len
     start_indices = random_select_start_indices(
-        feature_idx, step_idx, p, n_samples, n_steps, n_features
+        feature_idx, step_idx, hit_rate, n_samples, n_steps, n_features
     )
 
     X = X.transpose(0, 2, 1)
@@ -82,8 +87,9 @@ def _seq_missing_torch(
     X = torch.clone(X)
 
     n_samples, n_steps, n_features = X.shape
+    hit_rate = p * n_steps / seq_len
     start_indices = random_select_start_indices(
-        feature_idx, step_idx, p, n_samples, n_steps, n_features
+        feature_idx, step_idx, hit_rate, n_samples, n_steps, n_features
     )
 
     X = X.transpose(1, 2)

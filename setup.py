@@ -37,6 +37,7 @@ setup(
         "scipy",
         "pandas",
         "torch",
+        "tsdb",
     ],
     setup_requires=["setuptools>=38.6.0"],
     classifiers=[

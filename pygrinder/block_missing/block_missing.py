@@ -10,13 +10,14 @@ from typing import Union
 
 import numpy as np
 import torch
+from tsdb.utils.logging import logger
 
 
 def random_select_start_indices(
     block_width,
     feature_idx,
     step_idx,
-    p,
+    hit_rate,
     n_samples,
     n_steps,
     n_features,
@@ -24,11 +25,15 @@ def random_select_start_indices(
     all_feature_indices = [
         i * n_features + j for i in range(n_samples) for j in feature_idx
     ]
+
+    if hit_rate > 1:
+        logger.warning(f"hit_rate={hit_rate} > 1")
+
     all_feature_start_indices = [i * n_steps for i in all_feature_indices]
     selected_feature_start_indices = np.random.choice(
         all_feature_start_indices,
-        math.ceil(len(all_feature_start_indices) * p),
-        replace=False,
+        math.ceil(len(all_feature_start_indices) * hit_rate),
+        replace=hit_rate > 1,
     )
     selected_feature_start_indices = np.asarray(selected_feature_start_indices)
 
@@ -47,7 +52,7 @@ def random_select_start_indices(
 
 def _block_missing_numpy(
     X: np.ndarray,
-    p: float,
+    factor: float,
     block_len: int,
     block_width: int,
     feature_idx: list = None,
@@ -57,8 +62,9 @@ def _block_missing_numpy(
     X = np.copy(X)
 
     n_samples, n_steps, n_features = X.shape
+    hit_rate = factor * n_steps * n_features / (block_len * block_width)
     start_indices = random_select_start_indices(
-        block_width, feature_idx, step_idx, p, n_samples, n_steps, n_features
+        block_width, feature_idx, step_idx, hit_rate, n_samples, n_steps, n_features
     )
 
     X = X.transpose(0, 2, 1)
@@ -73,7 +79,7 @@ def _block_missing_numpy(
 
 def _block_missing_torch(
     X: torch.Tensor,
-    p: float,
+    factor: float,
     block_len: int,
     block_width: int,
     feature_idx: list = None,
@@ -83,8 +89,9 @@ def _block_missing_torch(
     X = torch.clone(X)
 
     n_samples, n_steps, n_features = X.shape
+    hit_rate = factor * n_steps * n_features / (block_len * block_width)
     start_indices = random_select_start_indices(
-        block_width, feature_idx, step_idx, p, n_samples, n_steps, n_features
+        block_width, feature_idx, step_idx, hit_rate, n_samples, n_steps, n_features
     )
 
     X = X.transpose(1, 2)
@@ -99,7 +106,7 @@ def _block_missing_torch(
 
 def block_missing(
     X: Union[np.ndarray, torch.Tensor],
-    p: float,
+    factor: float,
     block_len: int,
     block_width: int,
     feature_idx: list = None,
@@ -109,7 +116,7 @@ def block_missing(
         X = np.asarray(X)
     n_samples, n_steps, n_features = X.shape
 
-    assert 0 < p <= 1, f"p must be in range (0, 1), but got {p}"
+    # assert 0 < p <= 1, f"p must be in range (0, 1), but got {p}"
 
     assert isinstance(
         block_len, int
@@ -132,7 +139,7 @@ def block_missing(
             max(feature_idx) <= n_features
         ), f"values in `feature_idx` must be <= {n_features}, but got {max(feature_idx)}"
     else:
-        feature_idx = list(range(n_features - block_width))
+        feature_idx = list(range(n_features - block_width + 1))
 
     if step_idx is not None:
         assert isinstance(
@@ -146,12 +153,12 @@ def block_missing(
             n_steps - max(step_idx) >= block_len
         ), f"n_steps - max(step_idx) must be >= block_len, but got {n_steps - max(step_idx)}"
     else:
-        step_idx = list(range(n_steps - block_len))
+        step_idx = list(range(n_steps - block_len + 1))
 
     if isinstance(X, np.ndarray):
         corrupted_X = _block_missing_numpy(
             X,
-            p,
+            factor,
             block_len,
             block_width,
             feature_idx,
@@ -160,7 +167,7 @@ def block_missing(
     elif isinstance(X, torch.Tensor):
         corrupted_X = _block_missing_torch(
             X,
-            p,
+            factor,
             block_len,
             block_width,
             feature_idx,
