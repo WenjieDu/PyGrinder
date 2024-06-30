@@ -109,6 +109,32 @@ def seq_missing(
     feature_idx: list = None,
     step_idx: list = None,
 ) -> Union[np.ndarray, torch.Tensor]:
+    """Create subsequence missing data.
+
+    Parameters
+    ----------
+    X :
+        Data vector. If X has any missing values, they should be numpy.nan.
+
+    p :
+        The probability that values may be masked as missing completely at random.
+
+    seq_len :
+        The length of missing sequence.
+
+    feature_idx :
+        The indices of features for missing sequences to be corrupted.
+
+    step_idx :
+        The indices of steps for a missing sequence to start with.
+
+    Returns
+    -------
+    corrupted_X :
+        Original X with artificial missing values.
+        Both originally-missing and artificially-missing values are left as NaN.
+
+    """
     if isinstance(X, list):
         X = np.asarray(X)
     n_samples, n_steps, n_features = X.shape
