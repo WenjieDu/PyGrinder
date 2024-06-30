@@ -74,7 +74,17 @@ or install from source code:
 
 ```python
 import numpy as np
-from pygrinder import mcar, mar_logistic, mnar_x, mnar_t
+
+from pygrinder import (
+    mcar,
+    mar_logistic,
+    mnar_x,
+    mnar_t,
+    rdo,
+    seq_missing,
+    block_missing,
+    calc_missing_rate
+)
 
 # given a time-series dataset with 128 samples, each sample with 10 time steps and 36 data features
 ts_dataset = np.random.randn(128, 10, 36)
@@ -87,11 +97,29 @@ X_with_mar_data = mar_logistic(ts_dataset[:, 0, :], obs_rate=0.1, missing_rate=0
 
 # grind the dataset with MNAR pattern
 X_with_mnar_x_data = mnar_x(ts_dataset, offset=0.1)
-X_with_mnar_t_data = mnar_t(ts_dataset, cycle=20, pos = 10, scale = 3)
+X_with_mnar_t_data = mnar_t(ts_dataset, cycle=20, pos=10, scale=3)
+
+# grind the dataset with RDO pattern
+X_with_rdo_data = rdo(ts_dataset, p=0.1)
+
+# grind the dataset with Sequence-Missing pattern
+X_with_seq_missing_data = seq_missing(ts_dataset, p=0.1, seq_len=5)
+
+# grind the dataset with Block-Missing pattern
+X_with_block_missing_data = block_missing(ts_dataset, factor=0.1, block_width=3, block_len=3)
+
+# calculate the missing rate of the dataset
+missing_rate = calc_missing_rate(X_with_mcar_data)
 ```
 
 
 ## ❖ Citing PyGrinder/PyPOTS
+<p align="center">
+<a href="https://github.com/WenjieDu/PyPOTS">
+    <img src="https://pypots.com/figs/pypots_logos/Ecosystem/PyPOTS_Ecosystem_Pipeline.png" width="95%"/>
+</a>
+</p>
+
 The paper introducing PyPOTS is available [on arXiv](https://arxiv.org/abs/2305.18811),
 A short version of it is accepted by the 9th SIGKDD international workshop on Mining and Learning from Time Series ([MiLeTS'23](https://kdd-milets.github.io/milets2023/))).
 **Additionally**, PyPOTS has been included as a [PyTorch Ecosystem](https://pytorch.org/ecosystem/) project.
@@ -102,12 +130,6 @@ please cite it as below and 🌟star this repository to make others notice this 
 There are scientific research projects using PyPOTS and referencing in their papers.
 Here is [an incomplete list of them](https://scholar.google.com/scholar?as_ylo=2022&q=%E2%80%9CPyPOTS%E2%80%9D&hl=en).
 
-<p align="center">
-<a href="https://github.com/WenjieDu/PyPOTS">
-    <img src="https://pypots.com/figs/pypots_logos/Ecosystem/PyPOTS_Ecosystem_Pipeline.png" width="95%"/>
-</a>
-</p>
-
 ``` bibtex
 @article{du2023pypots,
 title={{PyPOTS: a Python toolbox for data mining on Partially-Observed Time Series}},
@@ -117,9 +139,9 @@ year={2023},
 }
 ```
 or
-> Wenjie Du. (2023).
+> Wenjie Du.
 > PyPOTS: a Python toolbox for data mining on Partially-Observed Time Series.
-> arXiv, abs/2305.18811. https://arxiv.org/abs/2305.18811
+> arXiv, abs/2305.18811, 2023.
 
 
 <details>
