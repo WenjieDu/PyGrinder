@@ -8,20 +8,23 @@ Utility functions for pygrinder.
 from typing import Union, Tuple
 
 import numpy as np
+import pandas as pd
 import torch
 
 
-def calc_missing_rate(X: Union[np.ndarray, torch.Tensor]) -> float:
+def calc_missing_rate(
+    X: Union[np.ndarray, torch.Tensor, pd.DataFrame],
+) -> float:
     """Calculate the originally missing rate of the raw data.
 
     Parameters
     ----------
     X:
-        Data array that may contain missing values.
+        Data array/tensor/frame that may contain missing values.
 
     Returns
     -------
-    originally_missing_rate,
+    missing_rate,
         The originally missing rate of the raw data. Its value should be in the range [0,1].
 
     """
@@ -29,16 +32,18 @@ def calc_missing_rate(X: Union[np.ndarray, torch.Tensor]) -> float:
         X = np.asarray(X)
 
     if isinstance(X, np.ndarray):
-        originally_missing_rate = np.sum(np.isnan(X)) / np.prod(X.shape)
+        missing_rate = np.sum(np.isnan(X)) / np.prod(X.shape)
     elif isinstance(X, torch.Tensor):
-        originally_missing_rate = torch.sum(torch.isnan(X)) / np.prod(X.shape)
-        originally_missing_rate = originally_missing_rate.item()
+        missing_rate = torch.sum(torch.isnan(X)) / np.prod(X.shape)
+        missing_rate = missing_rate.item()
+    elif isinstance(X, pd.DataFrame):
+        missing_rate = pd.isna(X).sum().sum() / np.prod(X.shape)
     else:
         raise TypeError(
-            f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}"
+            f"X must be type of list/numpy.ndarray/torch.Tensor/pandas.DataFrame, but got {type(X)}"
         )
 
-    return originally_missing_rate
+    return missing_rate
 
 
 def masked_fill(

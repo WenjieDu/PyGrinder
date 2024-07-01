@@ -21,7 +21,7 @@ PyGrinder: a Python toolkit for grinding data beans into the incomplete.
 #
 # Dev branch marker is: 'X.Y.dev' or 'X.Y.devN' where N is an integer.
 # 'X.Y.dev0' is the canonical version of 'X.Y.dev'
-__version__ = "0.6"
+__version__ = "0.6.1"
 
 from .missing_at_random import mar_logistic
 from .missing_completely_at_random import mcar, mcar_little_test

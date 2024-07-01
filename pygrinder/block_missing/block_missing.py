@@ -112,11 +112,39 @@ def block_missing(
     feature_idx: list = None,
     step_idx: list = None,
 ) -> Union[np.ndarray, torch.Tensor]:
+    """Create block missing data.
+
+    Parameters
+    ----------
+    X :
+        Data vector. If X has any missing values, they should be numpy.nan.
+
+    factor :
+        The actual missing rate of block_missing is hard to be strictly controlled.
+        Hence, we use ``factor`` to help adjust the final missing rate.
+
+    block_len :
+        The length of the mask block.
+
+    block_width :
+        The width of the mask block.
+
+    feature_idx :
+        The indices of features for missing block to star with.
+
+    step_idx :
+        The indices of steps for a missing block to start with.
+
+    Returns
+    -------
+    corrupted_X :
+        Original X with artificial missing values.
+        Both originally-missing and artificially-missing values are left as NaN.
+
+    """
     if isinstance(X, list):
         X = np.asarray(X)
     n_samples, n_steps, n_features = X.shape
-
-    # assert 0 < p <= 1, f"p must be in range (0, 1), but got {p}"
 
     assert isinstance(
         block_len, int
