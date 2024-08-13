@@ -1,5 +1,6 @@
 """
-PyGrinder: a Python toolkit for grinding data beans into the incomplete.
+PyGrinder: a Python toolkit for grinding data beans into the incomplete for real-world data simulation by
+introducing missing values with different missingness patterns
 """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>
