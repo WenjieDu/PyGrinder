@@ -166,7 +166,7 @@ def seq_missing(
             n_steps - max(step_idx) >= seq_len
         ), f"n_steps - max(step_idx) must be >= seq_len, but got {n_steps - max(step_idx)}"
     else:
-        step_idx = list(range(n_steps - seq_len))
+        step_idx = list(range(n_steps - seq_len + 1))
 
     if isinstance(X, np.ndarray):
         corrupted_X = _seq_missing_numpy(
