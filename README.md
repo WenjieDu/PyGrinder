@@ -80,6 +80,7 @@ from pygrinder import (
     mar_logistic,
     mnar_x,
     mnar_t,
+    mnar_nonuniform,
     rdo,
     seq_missing,
     block_missing,
@@ -98,6 +99,7 @@ X_with_mar_data = mar_logistic(ts_dataset[:, 0, :], obs_rate=0.1, missing_rate=0
 # grind the dataset with MNAR pattern
 X_with_mnar_x_data = mnar_x(ts_dataset, offset=0.1)
 X_with_mnar_t_data = mnar_t(ts_dataset, cycle=20, pos=10, scale=3)
+X_with_mnar_nonuniform_data = mnar_nonuniform(ts_dataset, p=0.5, increase_factor=0.5)
 
 # grind the dataset with RDO pattern
 X_with_rdo_data = rdo(ts_dataset, p=0.1)
