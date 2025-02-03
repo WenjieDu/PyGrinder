@@ -16,7 +16,7 @@ from pygrinder import (
     mar_logistic,
     mnar_x,
     mnar_t,
-    mnar_num,
+    mnar_nonuniform,
     rdo,
     seq_missing,
     block_missing,
@@ -113,8 +113,8 @@ class TestPyGrinder(unittest.TestCase):
         test_pvalue = mcar_little_test(X_with_missing.reshape(128, -1))
         print(f"MCAR Little test p_value for MNAR_T_return_masks: {test_pvalue}")
 
-        # mnar_num
-        X_with_missing, _ = mnar_num(X, p=0.5, increase_factor=0.5)
+        # mnar_nonuniform
+        X_with_missing, _ = mnar_nonuniform(X, p=0.5, increase_factor=0.5)
         X_with_missing, missing_mask = fill_and_get_mask(X_with_missing, NaN)
         X_with_missing = masked_fill(X_with_missing, 1 - missing_mask, np.nan)
         actual_missing_rate = calc_missing_rate(X_with_missing)
@@ -122,7 +122,9 @@ class TestPyGrinder(unittest.TestCase):
             round(actual_missing_rate, 1) > 0
         ), f"Actual missing rate is {actual_missing_rate}"
         test_pvalue = mcar_little_test(X_with_missing.reshape(128, -1))
-        print(f"MCAR Little test p_value for MNAR_Non_Uniform_Masking_return_masks: {test_pvalue}")
+        print(
+            f"MCAR Little test p_value for MNAR_Non_Uniform_Masking_return_masks: {test_pvalue}"
+        )
 
         # only add missing values into X
         # mnar_x
@@ -136,10 +138,12 @@ class TestPyGrinder(unittest.TestCase):
         test_pvalue = mcar_little_test(X_with_nan.numpy().reshape(128, -1))
         print(f"MCAR Little test p_value for MNAR_T_not_return_masks: {test_pvalue}")
 
-        # mnar_num
-        X_with_nan, _ = mnar_num(X, p=0.5, increase_factor=0.5)
+        # mnar_nonuniform
+        X_with_nan, _ = mnar_nonuniform(X, p=0.5, increase_factor=0.5)
         test_pvalue = mcar_little_test(X_with_nan.numpy().reshape(128, -1))
-        print(f"MCAR Little test p_value for MNAR_Non_Uniform_Masking_not_return_masks: {test_pvalue}")
+        print(
+            f"MCAR Little test p_value for MNAR_Non_Uniform_Masking_not_return_masks: {test_pvalue}"
+        )
 
     def test_3_rdo(self):
         X = np.random.randn(128, 10, 36)
@@ -201,6 +205,7 @@ class TestPyGrinder(unittest.TestCase):
         X_with_block_missing = block_missing(X, factor, block_len, block_width)
         actual_missing_rate = calc_missing_rate(X_with_block_missing)
         print(f"block {factor} actual_missing_rate: {actual_missing_rate}")
+
 
 if __name__ == "__main__":
     unittest.main()

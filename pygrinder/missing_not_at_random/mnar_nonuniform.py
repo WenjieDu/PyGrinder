@@ -45,7 +45,7 @@ def _adjust_probability_vectorized(
         return max(base_prob * (obs_count / avg_count) / increase_factor, 0.0)
 
 
-def _mnar_num_numpy(
+def _mnar_nonuniform_numpy(
     X: np.ndarray,
     p: float,
     pre_replacement_probabilities: Optional[np.ndarray] = None,
@@ -70,7 +70,7 @@ def _mnar_num_numpy(
         Tuple containing corrupted array and replacement probabilities used.
     """
     assert 0 < p < 1, f"p must be in range (0, 1), but got {p}"
-    
+
     # clone X to ensure values of X out of this function not being affected
     X = np.copy(X)
     N, T, D = X.shape
@@ -94,7 +94,9 @@ def _mnar_num_numpy(
             total_replacement_target = total_observations * p
 
             for _ in range(1000):  # Limit iterations to prevent infinite loop
-                total_replacement = np.sum(replacement_probabilities * observations_per_feature)
+                total_replacement = np.sum(
+                    replacement_probabilities * observations_per_feature
+                )
                 if np.isclose(total_replacement, total_replacement_target, rtol=1e-3):
                     break
                 adjustment_factor = total_replacement_target / total_replacement
@@ -105,13 +107,16 @@ def _mnar_num_numpy(
     # Randomly remove data points based on replacement probabilities
     random_matrix = np.random.rand(N, T, D)
 
-    # X[(~np.isnan(X)) & (random_matrix < replacement_probabilities)] = np.nan # masking all values(except original nan) with probability
-    X[random_matrix < replacement_probabilities] = np.nan # masking all values(including original nan) with probability
+    # masking all values(except original nan) with probability
+    # X[(~np.isnan(X)) & (random_matrix < replacement_probabilities)] = np.nan
+
+    # masking all values(including original nan) with probability
+    X[random_matrix < replacement_probabilities] = np.nan
 
     return X, replacement_probabilities
 
 
-def _mnar_num_torch(
+def _mnar_nonuniform_torch(
     X: torch.Tensor,
     p: float,
     pre_replacement_probabilities: Optional[torch.Tensor] = None,
@@ -136,7 +141,7 @@ def _mnar_num_torch(
         Tuple containing corrupted tensor and replacement probabilities used.
     """
     assert 0 < p < 1, f"p must be in range (0, 1), but got {p}"
-    
+
     # clone X to ensure values of X out of this function not being affected
     X = torch.clone(X)
     N, T, D = X.shape
@@ -160,8 +165,12 @@ def _mnar_num_torch(
             total_replacement_target = total_observations * p
 
             for _ in range(1000):  # Limit iterations to prevent infinite loop
-                total_replacement = torch.sum(replacement_probabilities * observations_per_feature)
-                if torch.isclose(total_replacement, total_replacement_target, rtol=1e-3):
+                total_replacement = torch.sum(
+                    replacement_probabilities * observations_per_feature
+                )
+                if torch.isclose(
+                    total_replacement, total_replacement_target, rtol=1e-3
+                ):
                     break
                 adjustment_factor = total_replacement_target / total_replacement
                 replacement_probabilities *= adjustment_factor
@@ -170,19 +179,23 @@ def _mnar_num_torch(
 
     # Randomly remove data points based on replacement probabilities
     random_matrix = torch.rand(N, T, D)
-    # X[(~torch.isnan(X)) & (random_matrix < replacement_probabilities)] = torch.nan # masking all values(except original nan) with probability
-    X[random_matrix < replacement_probabilities] = torch.nan # masking all values(including original nan) with probability
+
+    # masking all values(except original nan) with probability
+    # X[(~torch.isnan(X)) & (random_matrix < replacement_probabilities)] = torch.nan
+
+    # masking all values(including original nan) with probability
+    X[random_matrix < replacement_probabilities] = torch.nan
 
     return X, replacement_probabilities
 
 
-def mnar_num(
+def mnar_nonuniform(
     X: Union[np.ndarray, torch.Tensor],
     p: float,
     pre_replacement_probabilities: Optional[Union[np.ndarray, torch.Tensor]] = None,
     increase_factor: float = 0.5,
 ) -> Tuple[Union[np.ndarray, torch.Tensor], Union[np.ndarray, torch.Tensor]]:
-    """Create not-random missing values based on numerical features (MNAR-num case).
+    """Create not-random missing values based on numerical features (MNAR-non-uniform case).
     Missing values are introduced based on the observation counts of features, with adjustable
     probabilities that can be increased for under-observed features.
 
@@ -214,13 +227,23 @@ def mnar_num(
         X = np.asarray(X)
 
     if isinstance(X, np.ndarray):
-        if pre_replacement_probabilities is not None and isinstance(pre_replacement_probabilities, torch.Tensor):
+        if pre_replacement_probabilities is not None and isinstance(
+            pre_replacement_probabilities, torch.Tensor
+        ):
             pre_replacement_probabilities = pre_replacement_probabilities.numpy()
-        corrupted_X, probs = _mnar_num_numpy(X, p, pre_replacement_probabilities, increase_factor)
+        corrupted_X, probs = _mnar_nonuniform_numpy(
+            X, p, pre_replacement_probabilities, increase_factor
+        )
     elif isinstance(X, torch.Tensor):
-        if pre_replacement_probabilities is not None and isinstance(pre_replacement_probabilities, np.ndarray):
-            pre_replacement_probabilities = torch.from_numpy(pre_replacement_probabilities)
-        corrupted_X, probs = _mnar_num_torch(X, p, pre_replacement_probabilities, increase_factor)
+        if pre_replacement_probabilities is not None and isinstance(
+            pre_replacement_probabilities, np.ndarray
+        ):
+            pre_replacement_probabilities = torch.from_numpy(
+                pre_replacement_probabilities
+            )
+        corrupted_X, probs = _mnar_nonuniform_torch(
+            X, p, pre_replacement_probabilities, increase_factor
+        )
     else:
         raise TypeError(
             f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}"

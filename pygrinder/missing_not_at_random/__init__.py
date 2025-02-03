@@ -3,10 +3,10 @@
 
 from .mnar_t import mnar_t
 from .mnar_x import mnar_x
-from .mnar_num import mnar_num
+from .mnar_nonuniform import mnar_nonuniform
 
 __all__ = [
     "mnar_x",
     "mnar_t",
-    "mnar_num",
+    "mnar_nonuniform",
 ]
