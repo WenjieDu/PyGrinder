@@ -26,8 +26,8 @@
     <a href="https://github.com/WenjieDu/PyGrinder/network/members">
         <img alt="GitHub Repo forks" src="https://img.shields.io/github/forks/wenjiedu/pygrinder?logo=forgejo&logoColor=black&label=Forks">
     </a>
-    <a href="https://codeclimate.com/github/WenjieDu/PyGrinder">
-        <img alt="Code Climate maintainability" src="https://img.shields.io/codeclimate/maintainability-percentage/WenjieDu/PyGrinder?color=3C7699&label=Maintainability&logo=codeclimate">
+    <a href="https://sonarcloud.io/component_measures?id=WenjieDu_PyGrinder&metric=sqale_rating&view=list">
+        <img alt="maintainability" src="https://sonarcloud.io/api/project_badges/measure?project=WenjieDu_PyGrinder&metric=sqale_rating">
     </a>
     <a href='https://coveralls.io/github/WenjieDu/PyGrinder'>
         <img alt='Coveralls report' src='https://img.shields.io/coverallsCoverage/github/WenjieDu/PyGrinder?branch=main&logo=coveralls&color=75C1C4&label=Coverage'>
@@ -38,11 +38,11 @@
     <a href="https://arxiv.org/abs/2305.18811">
         <img alt="arXiv DOI" src="https://img.shields.io/badge/DOI-10.48550/arXiv.2305.18811-F8F7F0">
     </a>
-    <a href="https://anaconda.org/conda-forge/PyGrinder">
-        <img alt="Conda downloads" src="https://img.shields.io/endpoint?url=https://pypots.com/figs/downloads_badges/conda_pygrinder_downloads.json">
+    <a href="https://anaconda.org/conda-forge/pygrinder">
+        <img alt="Conda downloads" src="https://pypots.com/figs/downloads_badges/conda_pygrinder_downloads.svg">
     </a>
-    <a href='https://pepy.tech/project/PyGrinder'>
-        <img alt='PyPI downloads' src='https://img.shields.io/endpoint?url=https://pypots.com/figs/downloads_badges/pypi_pygrinder_downloads.json'>
+    <a href="https://pepy.tech/project/pygrinder">
+        <img alt="PyPI downloads" src="https://pypots.com/figs/downloads_badges/pypi_pygrinder_downloads.svg">
     </a>
 </p>
 
@@ -145,8 +145,3 @@ or
 > PyPOTS: a Python toolbox for data mining on Partially-Observed Time Series.
 > arXiv, abs/2305.18811, 2023.
 
-
-<details>
-<summary>🏠 Visits</summary>
-<img align='left' src='https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FWenjieDu%2FPyCorruptor&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=Visits+since+May+2022&edge_flat=false'>
-</details>
