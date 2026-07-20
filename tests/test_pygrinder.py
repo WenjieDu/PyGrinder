@@ -167,44 +167,39 @@ class TestPyGrinder(unittest.TestCase):
         n_samples, n_steps, n_features = 128, 24, 10
         X = np.random.randn(n_samples, n_steps, n_features)
 
-        p, seq_len = 0.1, 3
-        X_with_seq_missing = seq_missing(X, p, seq_len)
-        actual_missing_rate = calc_missing_rate(X_with_seq_missing)
-        print(f"sequence {p} actual_missing_rate: {actual_missing_rate}")
-        # assert round(actual_missing_rate, 1) == p
+        # The realized missing rate of subsequence masking does not equal p exactly
+        # (which is why the old exact-equality asserts were disabled), but the output
+        # must preserve the input shape and contain a non-trivial amount of missingness.
+        for p, seq_len in [(0.1, 3), (0.5, 3), (0.9, 3)]:
+            # exercise both numpy input and torch input
+            X_input = torch.from_numpy(X) if p == 0.9 else X
+            X_with_seq_missing = seq_missing(X_input, p, seq_len)
+            assert (
+                X_with_seq_missing.shape == X_input.shape
+            ), "seq_missing should preserve the input shape."
+            actual_missing_rate = calc_missing_rate(X_with_seq_missing)
+            print(f"sequence {p} actual_missing_rate: {actual_missing_rate}")
+            assert (
+                actual_missing_rate > 0
+            ), f"seq_missing produced no missing values for p={p}."
 
-        p, seq_len = 0.5, 3
-        X_with_seq_missing = seq_missing(X, p, seq_len)
-        actual_missing_rate = calc_missing_rate(X_with_seq_missing)
-        print(f"sequence {p} actual_missing_rate: {actual_missing_rate}")
-        # assert round(actual_missing_rate, 1) == p
-
-        X = torch.from_numpy(X)
-        p, seq_len = 0.9, 3
-        X_with_seq_missing = seq_missing(X, p, seq_len)
-        actual_missing_rate = calc_missing_rate(X_with_seq_missing)
-        print(f"sequence {p} actual_missing_rate: {actual_missing_rate}")
-        # assert round(actual_missing_rate, 1) == p
-
-    def test_4_block_missing(self):
+    def test_5_block_missing(self):
         n_samples, n_steps, n_features = 128, 24, 10
         X = np.random.randn(n_samples, n_steps, n_features)
 
-        factor, block_len, block_width = 0.1, 5, 5
-        X_with_block_missing = block_missing(X, factor, block_len, block_width)
-        actual_missing_rate = calc_missing_rate(X_with_block_missing)
-        print(f"block {factor} actual_missing_rate: {actual_missing_rate}")
-
-        factor, block_len, block_width = 0.5, 5, 5
-        X_with_block_missing = block_missing(X, factor, block_len, block_width)
-        actual_missing_rate = calc_missing_rate(X_with_block_missing)
-        print(f"block {factor} actual_missing_rate: {actual_missing_rate}")
-
-        X = torch.from_numpy(X)
-        factor, block_len, block_width = 0.9, 5, 5
-        X_with_block_missing = block_missing(X, factor, block_len, block_width)
-        actual_missing_rate = calc_missing_rate(X_with_block_missing)
-        print(f"block {factor} actual_missing_rate: {actual_missing_rate}")
+        for factor in [0.1, 0.5, 0.9]:
+            block_len, block_width = 5, 5
+            # exercise both numpy input and torch input
+            X_input = torch.from_numpy(X) if factor == 0.9 else X
+            X_with_block_missing = block_missing(X_input, factor, block_len, block_width)
+            assert (
+                X_with_block_missing.shape == X_input.shape
+            ), "block_missing should preserve the input shape."
+            actual_missing_rate = calc_missing_rate(X_with_block_missing)
+            print(f"block {factor} actual_missing_rate: {actual_missing_rate}")
+            assert (
+                actual_missing_rate > 0
+            ), f"block_missing produced no missing values for factor={factor}."
 
 
 if __name__ == "__main__":
