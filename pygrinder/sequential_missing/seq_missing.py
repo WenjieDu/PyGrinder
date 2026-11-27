@@ -1,6 +1,4 @@
-"""
-
-"""
+""" """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>
 # License: BSD-3-Clause
@@ -25,9 +23,7 @@ def random_select_start_indices(
         all_feature_indices = list(range(n_samples * n_features))
         all_feature_start_indices = [i * n_steps for i in all_feature_indices]
     else:
-        all_feature_indices = [
-            i * n_features + j for i in range(n_samples) for j in feature_idx
-        ]
+        all_feature_indices = [i * n_features + j for i in range(n_samples) for j in feature_idx]
         all_feature_start_indices = [i * n_steps for i in all_feature_indices]
 
     if hit_rate > 1:
@@ -62,9 +58,7 @@ def _seq_missing_numpy(
 
     n_samples, n_steps, n_features = X.shape
     hit_rate = p * n_steps / seq_len
-    start_indices = random_select_start_indices(
-        feature_idx, step_idx, hit_rate, n_samples, n_steps, n_features
-    )
+    start_indices = random_select_start_indices(feature_idx, step_idx, hit_rate, n_samples, n_steps, n_features)
 
     X = X.transpose(0, 2, 1)
     X = X.reshape(-1)
@@ -88,9 +82,7 @@ def _seq_missing_torch(
 
     n_samples, n_steps, n_features = X.shape
     hit_rate = p * n_steps / seq_len
-    start_indices = random_select_start_indices(
-        feature_idx, step_idx, hit_rate, n_samples, n_steps, n_features
-    )
+    start_indices = random_select_start_indices(feature_idx, step_idx, hit_rate, n_samples, n_steps, n_features)
 
     X = X.transpose(1, 2)
     X = X.flatten()
@@ -140,31 +132,23 @@ def seq_missing(
     n_samples, n_steps, n_features = X.shape
 
     assert 0 < p <= 1, f"p must be in range (0, 1), but got {p}"
-    assert isinstance(
-        seq_len, int
-    ), f"`seq_len` must be type of int, but got {type(seq_len)}"
+    assert isinstance(seq_len, int), f"`seq_len` must be type of int, but got {type(seq_len)}"
     assert seq_len <= n_steps, f"`seq_len` must be <= {n_steps}, but got {seq_len}"
 
     if feature_idx is not None:
-        assert isinstance(
-            feature_idx, list
-        ), f"`feature_idx` must be type of list, but got {type(feature_idx)}"
+        assert isinstance(feature_idx, list), f"`feature_idx` must be type of list, but got {type(feature_idx)}"
 
-        assert (
-            max(feature_idx) <= n_features
-        ), f"values in `feature_idx` must be <= {n_features}, but got {max(feature_idx)}"
+        assert max(feature_idx) <= n_features, (
+            f"values in `feature_idx` must be <= {n_features}, but got {max(feature_idx)}"
+        )
 
     if step_idx is not None:
-        assert isinstance(
-            step_idx, list
-        ), f"`step_idx` must be type of list, but got {type(step_idx)}"
+        assert isinstance(step_idx, list), f"`step_idx` must be type of list, but got {type(step_idx)}"
 
-        assert (
-            max(step_idx) <= n_steps
-        ), f"values in `step_idx` must be <= {n_steps}, but got {max(step_idx)}"
-        assert (
-            n_steps - max(step_idx) >= seq_len
-        ), f"n_steps - max(step_idx) must be >= seq_len, but got {n_steps - max(step_idx)}"
+        assert max(step_idx) <= n_steps, f"values in `step_idx` must be <= {n_steps}, but got {max(step_idx)}"
+        assert n_steps - max(step_idx) >= seq_len, (
+            f"n_steps - max(step_idx) must be >= seq_len, but got {n_steps - max(step_idx)}"
+        )
     else:
         step_idx = list(range(n_steps - seq_len + 1))
 
@@ -185,8 +169,6 @@ def seq_missing(
             step_idx,
         )
     else:
-        raise TypeError(
-            f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}"
-        )
+        raise TypeError(f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}")
 
     return corrupted_X

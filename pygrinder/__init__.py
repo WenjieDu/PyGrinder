@@ -9,15 +9,15 @@ introducing missing values with different missingness patterns
 from .block_missing import block_missing
 from .missing_at_random import mar_logistic
 from .missing_completely_at_random import mcar, mcar_little_test
-from .missing_not_at_random import mnar_x, mnar_t, mnar_nonuniform
+from .missing_not_at_random import mnar_nonuniform, mnar_t, mnar_x
 from .randomly_drop_observations import rdo
 from .sequential_missing import seq_missing
 from .utils import (
     calc_missing_rate,
-    masked_fill,
     fill_and_get_mask,
-    fill_and_get_mask_torch,
     fill_and_get_mask_numpy,
+    fill_and_get_mask_torch,
+    masked_fill,
 )
 from .version import __version__
 

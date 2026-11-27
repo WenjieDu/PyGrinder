@@ -92,7 +92,5 @@ def mnar_t(
     elif isinstance(X, torch.Tensor):
         corrupted_X = _mnar_t_torch(X, cycle, pos, scale)
     else:
-        raise TypeError(
-            f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}"
-        )
+        raise TypeError(f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}")
     return corrupted_X

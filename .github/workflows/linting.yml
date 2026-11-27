@@ -2,30 +2,76 @@ name: Linting
 
 on:
     push:
-        branches:
-            - main
-            - dev
+        branches: [main, dev]
     pull_request:
-        branches:
-            - main
-            - dev
+        branches: [main, dev]
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
-    flake8-linting:
+    ruff-linting:
         runs-on: ubuntu-latest
+        timeout-minutes: 15
 
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  fetch-depth: 0
+                  persist-credentials: false
 
             - name: Set up Python
-              uses: actions/setup-python@v5
+              uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
               with:
-                  python-version: "3.10"
+                  python-version: "3.13"
 
-            - name: Install Flake8
+            - name: Install lint tools
               run: |
-                pip install flake8 flake8-pyproject
+                  python -m pip install --only-binary=:all: "ruff==0.17.6" "pre-commit==4.7.0"
 
-            - name: Run linting
+            - name: Ruff lint and formatting
               run: |
-                flake8 .
+                  ruff check .
+                  ruff format . --check
+
+            - name: Structural checks
+              run: |
+                  pre-commit run check-yaml --all-files
+                  pre-commit run check-toml --all-files
+                  pre-commit run check-merge-conflict --all-files
+
+            - name: Pre-commit checks on changed files
+              env:
+                  BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+              run: |
+                  if [[ -n "$BASE" && "$BASE" != 0000000000000000000000000000000000000000 ]] && git cat-file -e "$BASE^{commit}"; then
+                      pre-commit run --from-ref "$BASE" --to-ref HEAD
+                  else
+                      echo "No comparison base; structural and Ruff checks ran on all tracked files."
+                  fi
+
+    workflow-lint:
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
+        steps:
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  persist-credentials: false
+            - name: Install verified actionlint release
+              run: |
+                  archive="$RUNNER_TEMP/actionlint_1.7.7_linux_amd64.tar.gz"
+                  curl --fail --silent --show-error --location --retry 3 \
+                      --proto '=https' --proto-redir '=https' \
+                      https://github.com/rhysd/actionlint/releases/download/v1.7.7/actionlint_1.7.7_linux_amd64.tar.gz \
+                      --output "$archive"
+                  echo "023070a287cd8cccd71515fedc843f1985bf96c436b7effaecce67290e7e0757  $archive" | sha256sum --check
+                  mkdir -p "$RUNNER_TEMP/actionlint-bin"
+                  tar -xzf "$archive" -C "$RUNNER_TEMP/actionlint-bin" actionlint
+                  echo "$RUNNER_TEMP/actionlint-bin" >> "$GITHUB_PATH"
+            - name: Validate workflow definitions
+              run: actionlint -shellcheck=

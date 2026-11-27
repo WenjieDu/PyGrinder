@@ -1,5 +1,6 @@
 numpy
 scikit_learn
 pandas
+sphinx
 sphinxcontrib-bibtex
 furo

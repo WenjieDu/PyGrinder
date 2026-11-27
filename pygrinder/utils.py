@@ -5,7 +5,7 @@ Utility functions for pygrinder.
 # Created by Wenjie Du <wenjay.du@gmail.com>
 # License: BSD-3-Clause
 
-from typing import Union, Tuple
+from typing import Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -39,9 +39,7 @@ def calc_missing_rate(
     elif isinstance(X, pd.DataFrame):
         missing_rate = pd.isna(X).sum().sum() / np.prod(X.shape)
     else:
-        raise TypeError(
-            f"X must be type of list/numpy.ndarray/torch.Tensor/pandas.DataFrame, but got {type(X)}"
-        )
+        raise TypeError(f"X must be type of list/numpy.ndarray/torch.Tensor/pandas.DataFrame, but got {type(X)}")
 
     return missing_rate
 
@@ -74,13 +72,8 @@ def masked_fill(
         X = np.asarray(X)
         mask = np.asarray(mask)
 
-    assert X.shape == mask.shape, (
-        "Shapes of X and mask must match, "
-        f"but X.shape={X.shape}, mask.shape={mask.shape}"
-    )
-    assert isinstance(X, type(mask)), (
-        "Data types of X and mask must match, " f"but got {type(X)} and {type(mask)}"
-    )
+    assert X.shape == mask.shape, f"Shapes of X and mask must match, but X.shape={X.shape}, mask.shape={mask.shape}"
+    assert isinstance(X, type(mask)), f"Data types of X and mask must match, but got {type(X)} and {type(mask)}"
 
     if isinstance(X, np.ndarray):
         filled_X = X.copy()
@@ -93,9 +86,7 @@ def masked_fill(
         mask = mask.type(torch.bool)
         filled_X[mask] = val
     else:
-        raise TypeError(
-            f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}"
-        )
+        raise TypeError(f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}")
 
     return filled_X
 
@@ -197,8 +188,6 @@ def fill_and_get_mask(
     elif isinstance(X, torch.Tensor):
         X, missing_mask = fill_and_get_mask_torch(X, nan)
     else:
-        raise TypeError(
-            f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}"
-        )
+        raise TypeError(f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}")
 
     return X, missing_mask
