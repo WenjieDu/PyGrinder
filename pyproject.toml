@@ -64,6 +64,7 @@ dependencies = { file = "requirements/requirements.txt" }
 [tool.ruff]
 line-length = 120
 target-version = "py310"
+extend-exclude = ["*.md", "*.rst", "*.yml", "*.yaml"]
 
 [tool.ruff.lint]
 select = ["E4", "E7", "E9", "F", "I"]
