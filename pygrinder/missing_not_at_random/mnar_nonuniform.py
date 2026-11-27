@@ -223,12 +223,12 @@ def mnar_nonuniform(
     if isinstance(X, np.ndarray):
         if pre_replacement_probabilities is not None and isinstance(pre_replacement_probabilities, torch.Tensor):
             pre_replacement_probabilities = pre_replacement_probabilities.numpy()
-        corrupted_X, probs = _mnar_nonuniform_numpy(X, p, pre_replacement_probabilities, increase_factor)
+        corrupted_x, probs = _mnar_nonuniform_numpy(X, p, pre_replacement_probabilities, increase_factor)
     elif isinstance(X, torch.Tensor):
         if pre_replacement_probabilities is not None and isinstance(pre_replacement_probabilities, np.ndarray):
             pre_replacement_probabilities = torch.from_numpy(pre_replacement_probabilities)
-        corrupted_X, probs = _mnar_nonuniform_torch(X, p, pre_replacement_probabilities, increase_factor)
+        corrupted_x, probs = _mnar_nonuniform_torch(X, p, pre_replacement_probabilities, increase_factor)
     else:
         raise TypeError(f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}")
 
-    return corrupted_X, probs
+    return corrupted_x, probs

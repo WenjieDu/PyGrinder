@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import argparse
-import ast
+import re
 import subprocess
 from pathlib import Path
 
@@ -12,14 +12,10 @@ VERSION_FILE = ROOT / "pygrinder" / "version.py"
 
 
 def read_version() -> str:
-    tree = ast.parse(VERSION_FILE.read_text(encoding="utf-8"))
-    for node in tree.body:
-        if isinstance(node, ast.Assign):
-            for target in node.targets:
-                if isinstance(target, ast.Name) and target.id == "__version__":
-                    if isinstance(node.value, ast.Constant) and isinstance(node.value.value, str):
-                        return node.value.value
-    raise RuntimeError(f"Could not find __version__ in {VERSION_FILE}")
+    match = re.search(r'^__version__\s*=\s*["\']([^"\']+)["\']', VERSION_FILE.read_text(encoding="utf-8"), re.MULTILINE)
+    if match is None:
+        raise RuntimeError(f"Could not find __version__ in {VERSION_FILE}")
+    return match.group(1)
 
 
 def git_head() -> str:

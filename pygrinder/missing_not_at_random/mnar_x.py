@@ -47,9 +47,9 @@ def _mnar_x_torch(
     mask_sum = ori_mask.sum(1)
     mask_sum[mask_sum == 0] = 1
     X_mean = ((X * ori_mask).sum(1) / mask_sum).reshape(n_s, 1, n_c).repeat(1, n_l, 1)
-    X_std = (((X - X_mean) * ori_mask).pow(2).sum(1) / mask_sum).sqrt().reshape(n_s, 1, n_c).repeat(1, n_l, 1)
+    x_std = (((X - X_mean) * ori_mask).pow(2).sum(1) / mask_sum).sqrt().reshape(n_s, 1, n_c).repeat(1, n_l, 1)
     mnar_missing_mask = torch.zeros_like(X)
-    mnar_missing_mask[X <= (X_mean + offset * X_std)] = 1
+    mnar_missing_mask[X <= (X_mean + offset * x_std)] = 1
     missing_mask = ori_mask * mnar_missing_mask
     X[missing_mask == 0] = torch.nan
     return X
