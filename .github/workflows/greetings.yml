@@ -1,40 +1,77 @@
-name: Auto reply to new issues and PRs
+name: Welcome first-time contributors
 
 on:
-    issues:
-        types: [ opened ]
-    pull_request_target:
-        branches: [ main, dev ]
-        types: [ opened ]
+  issues:
+    types: [opened]
+  pull_request_target:
+    branches: [main, dev]
+    types: [opened]
+
+permissions: {}
+
+# Serialize reruns for the same issue/PR to prevent duplicate comments.
+concurrency:
+  group: pygrinder-greeting-${{ github.event.issue.number || github.event.pull_request.number }}
+  cancel-in-progress: false
 
 jobs:
-    greeting:
-        runs-on: ubuntu-latest
+  greeting:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+      pull-requests: write
 
-        permissions:
-            pull-requests: write
-            issues: write
+    steps:
+      # Metadata and comments only. Never check out or run PR-controlled code in this workflow.
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          ISSUE_MESSAGE: |
+            Hi there 👋,
 
-        steps:
-            -   uses: actions/first-interaction@1c4688942c71f71d4f5502a26ea67c331730fa4d # v3
-                with:
-                    repo_token: ${{ secrets.GITHUB_TOKEN }}
-                    issue_message: |
-                        Hi there 👋,
+            Thank you for your first issue in PyGrinder! Please include the affected version, relevant context, and a minimal reproduction for bugs.
 
-                        Thank you so much for your attention to PyGrinder and PyPOTS! You can follow me on GitHub to receive the latest news of PyGrinder and PyPOTS. If you find PyGrinder helpful to your work, please star⭐️ this repository. Your star is your recognition, which can help more people notice PyPOTS and grow PyPOTS community. It matters and is definitely a kind of contribution to the community.
+            For usage questions, see the [PyGrinder documentation](https://docs.pypots.com/en/latest/pygrinder.html) or join our [Discord community](https://discord.gg/DXpCTdrvCE). Please report security vulnerabilities [privately](https://github.com/WenjieDu/PyGrinder/security/advisories/new).
 
-                        I have received your message and will respond ASAP. Thank you for your patience! 😃
+            Thanks for helping improve PyGrinder!
 
-                        Best,
-                        Wenjie
-                    pr_message: |
-                        Hi there 👋,
+            The PyGrinder team
+          PR_MESSAGE: |
+            Hi there 👋,
 
-                        We really really appreciate that you have taken the time to make this PR on PyGrinder!
+            Thank you for your first contribution to PyGrinder! Ordinary contributions should target the dev branch. Please link relevant issues, explain the changes, and include your test results and any compatibility or licensing considerations.
 
-                        If you are trying to fix a bug, please reference the issue number in the description or give your details about the bug.
-                        If you are implementing a feature request, please check with the maintainers that the feature will be accepted first.
+            For major features, please discuss the proposal with maintainers first and include focused tests for the affected corruption pattern or utility.
 
-                        Best,
-                        Wenjie
+            The PyGrinder team
+        with:
+          script: |
+            const item = context.payload.issue || context.payload.pull_request;
+            const author = item?.user;
+            if (author?.type !== "User" || !author.login || !author.id ||
+                /\[bot\]$/i.test(author.login)) {
+              core.info("Skipping non-human or missing author");
+              return;
+            }
+            // The issues API includes pull requests. Count earlier contributions of
+            // either type, regardless of their state, using the event author's ID.
+            const history = await github.paginate(github.rest.issues.listForRepo, {
+              ...context.repo, creator: author.login, state: "all", per_page: 100,
+            });
+            if (history.some(entry => entry.number < item.number && entry.user?.id === author.id)) {
+              core.info(`Skipping returning contributor ${author.login}`);
+              return;
+            }
+            const params = { ...context.repo, issue_number: item.number };
+            const message = (context.payload.issue ? process.env.ISSUE_MESSAGE : process.env.PR_MESSAGE).trimEnd();
+            const marker = "<!-- pygrinder-first-contribution-greeting -->";
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              ...params, per_page: 100,
+            });
+            // Recognize both the new marker and the previous workflow's exact message.
+            if (comments.some(comment => comment.user?.login === "github-actions[bot]" &&
+                (comment.body?.includes(marker) || comment.body?.trim() === message.trim()))) {
+              core.info(`Already greeted #${item.number}`);
+              return;
+            }
+            await github.rest.issues.createComment({ ...params, body: `${message}\n\n${marker}` });
