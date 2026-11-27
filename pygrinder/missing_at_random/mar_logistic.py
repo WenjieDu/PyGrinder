@@ -61,9 +61,7 @@ def _mar_logistic_torch(
     else:
         X = torch.clone(X).to(torch.float32)
 
-    assert (
-        torch.isnan(X).sum() == 0
-    ), "the input X of the mar_logistic() shouldn't containing originally missing data"
+    assert torch.isnan(X).sum() == 0, "the input X of the mar_logistic() shouldn't containing originally missing data"
 
     mask = torch.zeros(n, d).bool()
 
@@ -124,8 +122,6 @@ def mar_logistic(
     if isinstance(X, np.ndarray) or isinstance(X, torch.Tensor):
         corrupted_X = _mar_logistic_torch(X, obs_rate, missing_rate)
     else:
-        raise TypeError(
-            f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}"
-        )
+        raise TypeError(f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}")
 
     return corrupted_X

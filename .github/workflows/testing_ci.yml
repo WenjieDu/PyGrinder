@@ -2,53 +2,71 @@ name: CI
 
 on:
     push:
-        branches:
-            - main
-            - dev
-            - temp_test_branch  # if in need, create such a temporary branch to test some functions
+        branches: [main, dev]
     pull_request:
-        branches:
-            - dev
+        branches: [dev]
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
     test:
         runs-on: ${{ matrix.os }}
+        timeout-minutes: 30
         strategy:
             fail-fast: false
             matrix:
-                os: [ ubuntu-latest, windows-latest, macOS-latest ]
-                python-version: ["3.8","3.11"]
+                include:
+                    - os: ubuntu-latest
+                      python-version: "3.10"
+                    - os: ubuntu-latest
+                      python-version: "3.11"
+                    - os: ubuntu-latest
+                      python-version: "3.12"
+                    - os: ubuntu-latest
+                      python-version: "3.13"
+                    - os: ubuntu-latest
+                      python-version: "3.14"
+                    - os: macos-15
+                      python-version: "3.13"
+                    - os: windows-latest
+                      python-version: "3.12"
 
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  persist-credentials: false
 
             - name: Set up Python
-              uses: actions/setup-python@v5
+              uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
               with:
-                python-version: ${{ matrix.python-version }}
-                check-latest: true
-                cache: pip
-                cache-dependency-path: |
-                    requirements/requirements.txt
+                  python-version: ${{ matrix.python-version }}
+                  check-latest: true
+                  cache: pip
+                  cache-dependency-path: requirements/requirements.txt
 
             - name: Install dependencies
               run: |
-                python -m pip install --upgrade pip
-                pip install numpy==1.24
-                pip install -r requirements/requirements.txt
-                pip install pytest coverage
+                  python -m pip install --upgrade pip
+                  python -m pip install -r requirements/requirements.txt
+                  python -m pip install pytest coverage
 
-            -   name: Test with pytest
-                run: |
-                    coverage run --source=pygrinder -m pytest
+            - name: Test with pytest
+              run: coverage run --source=pygrinder -m pytest
 
-            -   name: Write the LCOV report
-                run: |
-                    coverage lcov
+            - name: Write the LCOV report
+              if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.13'
+              run: coverage lcov
 
-            -   name: Submit report
-                uses: coverallsapp/github-action@master
-                continue-on-error: true
-                with:
-                    github-token: ${{ secrets.GITHUB_TOKEN }}
-                    path-to-lcov: 'coverage.lcov'
+            - name: Submit report
+              if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.13'
+              uses: coverallsapp/github-action@master
+              continue-on-error: true
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  path-to-lcov: coverage.lcov

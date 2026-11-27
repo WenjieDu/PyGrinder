@@ -6,7 +6,7 @@
 
 <p align='center'>
     <a href='https://github.com/WenjieDu/PyGrinder'>
-        <img alt='Python version' src='https://img.shields.io/badge/python-v3-E97040?logo=python&logoColor=white'>
+        <img alt='Python version' src='https://img.shields.io/badge/Python-3.10%2B-E97040?logo=python&logoColor=white'>
     </a>
     <a href="https://github.com/WenjieDu/PyGrinder/releases">
         <img alt="the latest release version" src="https://img.shields.io/github/v/release/wenjiedu/PyGrinder?color=EE781F&include_prereleases&label=Release&logo=github&logoColor=white">
@@ -62,12 +62,14 @@ in the given data.
 
 
 ## ❖ Usage Examples
-PyGrinder now is available on <a alt='Anaconda' href='https://anaconda.org/conda-forge/tsdb'><img align='center' src='https://img.shields.io/badge/Anaconda--lightgreen?style=social&logo=anaconda'></a>❗️
+PyGrinder now is available on <a alt='Anaconda' href='https://anaconda.org/conda-forge/pygrinder'><img align='center' src='https://img.shields.io/badge/Anaconda--lightgreen?style=social&logo=anaconda'></a>❗️
 
 Install it with `conda install pygrinder`, you may need to specify the channel with option `-c conda-forge`
 
 or install via PyPI:
 > pip install pygrinder
+
+PyGrinder requires Python 3.10 or newer.
 
 or install from source code:
 > pip install `https://github.com/WenjieDu/PyGrinder/archive/main.zip`
@@ -144,4 +146,3 @@ or
 > Wenjie Du.
 > PyPOTS: a Python toolbox for data mining on Partially-Observed Time Series.
 > arXiv, abs/2305.18811, 2023.
-

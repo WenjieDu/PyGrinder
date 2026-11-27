@@ -67,8 +67,8 @@ def rdo(
     p :
         The proportion of the observed values that will be randomly masked as missing.
         RDO (randomly drop observations) will randomly select values from the observed values to be masked as missing.
-        The number of selected observations is determined by `p` and the total number of observed values in X,
-        e.g. if `p`=0.1, and there are 1000 observed values in X, then 0.1*1000=100 values will be randomly selected
+        The number of selected observations is determined by ``p`` and the total number of observed values in X,
+        e.g. if ``p=0.1``, and there are 1000 observed values in X, then 0.1*1000=100 values will be randomly selected
         to be masked as missing. If the result is not an integer, the number of selected values will be rounded to
         the nearest.
 
@@ -89,8 +89,6 @@ def rdo(
     elif isinstance(X, torch.Tensor):
         corrupted_X = _rdo_torch(X, p)
     else:
-        raise TypeError(
-            f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}"
-        )
+        raise TypeError(f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}")
 
     return corrupted_X

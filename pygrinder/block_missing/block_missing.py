@@ -1,6 +1,4 @@
-"""
-
-"""
+""" """
 
 # Created by Wenjie Du <wenjay.du@gmail.com>
 # License: BSD-3-Clause
@@ -22,9 +20,7 @@ def random_select_start_indices(
     n_steps,
     n_features,
 ) -> np.ndarray:
-    all_feature_indices = [
-        i * n_features + j for i in range(n_samples) for j in feature_idx
-    ]
+    all_feature_indices = [i * n_features + j for i in range(n_samples) for j in feature_idx]
 
     if hit_rate > 1:
         logger.warning(f"hit_rate={hit_rate} > 1")
@@ -44,9 +40,7 @@ def random_select_start_indices(
     step_shift = np.asarray(step_shift)
 
     selected_start_indices = selected_feature_start_indices + step_shift
-    selected_start_indices = [
-        i + j * n_steps for i in selected_start_indices for j in range(block_width)
-    ]
+    selected_start_indices = [i + j * n_steps for i in selected_start_indices for j in range(block_width)]
     return np.asarray(selected_start_indices)
 
 
@@ -146,40 +140,28 @@ def block_missing(
         X = np.asarray(X)
     n_samples, n_steps, n_features = X.shape
 
-    assert isinstance(
-        block_len, int
-    ), f"`block_len` must be type of int, but got {type(block_len)}"
+    assert isinstance(block_len, int), f"`block_len` must be type of int, but got {type(block_len)}"
     assert block_len <= n_steps, f"`seq_len` must be <= {n_steps}, but got {block_len}"
 
-    assert isinstance(
-        block_width, int
-    ), f"`block_width` must be type of int, but got {type(block_width)}"
-    assert (
-        block_width <= n_features
-    ), f"`block_width` must be <= {n_features}, but got {block_width}"
+    assert isinstance(block_width, int), f"`block_width` must be type of int, but got {type(block_width)}"
+    assert block_width <= n_features, f"`block_width` must be <= {n_features}, but got {block_width}"
 
     if feature_idx is not None:
-        assert isinstance(
-            feature_idx, list
-        ), f"`feature_idx` must be type of list, but got {type(feature_idx)}"
+        assert isinstance(feature_idx, list), f"`feature_idx` must be type of list, but got {type(feature_idx)}"
 
-        assert (
-            max(feature_idx) <= n_features
-        ), f"values in `feature_idx` must be <= {n_features}, but got {max(feature_idx)}"
+        assert max(feature_idx) <= n_features, (
+            f"values in `feature_idx` must be <= {n_features}, but got {max(feature_idx)}"
+        )
     else:
         feature_idx = list(range(n_features - block_width + 1))
 
     if step_idx is not None:
-        assert isinstance(
-            step_idx, list
-        ), f"`step_idx` must be type of list, but got {type(step_idx)}"
+        assert isinstance(step_idx, list), f"`step_idx` must be type of list, but got {type(step_idx)}"
 
-        assert (
-            max(step_idx) <= n_steps
-        ), f"values in `step_idx` must be <= {n_steps}, but got {max(step_idx)}"
-        assert (
-            n_steps - max(step_idx) >= block_len
-        ), f"n_steps - max(step_idx) must be >= block_len, but got {n_steps - max(step_idx)}"
+        assert max(step_idx) <= n_steps, f"values in `step_idx` must be <= {n_steps}, but got {max(step_idx)}"
+        assert n_steps - max(step_idx) >= block_len, (
+            f"n_steps - max(step_idx) must be >= block_len, but got {n_steps - max(step_idx)}"
+        )
     else:
         step_idx = list(range(n_steps - block_len + 1))
 
@@ -202,8 +184,6 @@ def block_missing(
             step_idx,
         )
     else:
-        raise TypeError(
-            f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}"
-        )
+        raise TypeError(f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}")
 
     return corrupted_X

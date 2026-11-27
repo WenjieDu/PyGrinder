@@ -22,13 +22,9 @@ def _mnar_x_numpy(
     ori_mask = ~np.isnan(X)
     mask_sum = ori_mask.sum(1)
     mask_sum[mask_sum == 0] = 1
-    X_mean = np.repeat(
-        ((X * ori_mask).sum(1) / mask_sum).reshape(n_s, 1, n_c), n_l, axis=1
-    )
+    X_mean = np.repeat(((X * ori_mask).sum(1) / mask_sum).reshape(n_s, 1, n_c), n_l, axis=1)
     X_std = np.repeat(
-        np.sqrt(np.square((X - X_mean) * ori_mask).sum(1) / mask_sum).reshape(
-            n_s, 1, n_c
-        ),
+        np.sqrt(np.square((X - X_mean) * ori_mask).sum(1) / mask_sum).reshape(n_s, 1, n_c),
         n_l,
         axis=1,
     )
@@ -51,12 +47,7 @@ def _mnar_x_torch(
     mask_sum = ori_mask.sum(1)
     mask_sum[mask_sum == 0] = 1
     X_mean = ((X * ori_mask).sum(1) / mask_sum).reshape(n_s, 1, n_c).repeat(1, n_l, 1)
-    X_std = (
-        (((X - X_mean) * ori_mask).pow(2).sum(1) / mask_sum)
-        .sqrt()
-        .reshape(n_s, 1, n_c)
-        .repeat(1, n_l, 1)
-    )
+    X_std = (((X - X_mean) * ori_mask).pow(2).sum(1) / mask_sum).sqrt().reshape(n_s, 1, n_c).repeat(1, n_l, 1)
     mnar_missing_mask = torch.zeros_like(X)
     mnar_missing_mask[X <= (X_mean + offset * X_std)] = 1
     missing_mask = ori_mask * mnar_missing_mask
@@ -95,8 +86,6 @@ def mnar_x(
     elif isinstance(X, torch.Tensor):
         corrupted_X = _mnar_x_torch(X, offset)
     else:
-        raise TypeError(
-            f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}"
-        )
+        raise TypeError(f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}")
 
     return corrupted_X

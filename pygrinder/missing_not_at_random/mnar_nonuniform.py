@@ -5,7 +5,7 @@ Corrupt data by adding missing values to it with MNAR (missing not at random) pa
 # Created by Linglong Qian <linglong.qian@kcl.ac.uk>
 # License: BSD-3-Clause
 
-from typing import Union, Tuple, Optional
+from typing import Optional, Tuple, Union
 
 import numpy as np
 import torch
@@ -94,9 +94,7 @@ def _mnar_nonuniform_numpy(
             total_replacement_target = total_observations * p
 
             for _ in range(1000):  # Limit iterations to prevent infinite loop
-                total_replacement = np.sum(
-                    replacement_probabilities * observations_per_feature
-                )
+                total_replacement = np.sum(replacement_probabilities * observations_per_feature)
                 if np.isclose(total_replacement, total_replacement_target, rtol=1e-3):
                     break
                 adjustment_factor = total_replacement_target / total_replacement
@@ -165,12 +163,8 @@ def _mnar_nonuniform_torch(
             total_replacement_target = total_observations * p
 
             for _ in range(1000):  # Limit iterations to prevent infinite loop
-                total_replacement = torch.sum(
-                    replacement_probabilities * observations_per_feature
-                )
-                if torch.isclose(
-                    total_replacement, total_replacement_target, rtol=1e-3
-                ):
+                total_replacement = torch.sum(replacement_probabilities * observations_per_feature)
+                if torch.isclose(total_replacement, total_replacement_target, rtol=1e-3):
                     break
                 adjustment_factor = total_replacement_target / total_replacement
                 replacement_probabilities *= adjustment_factor
@@ -227,26 +221,14 @@ def mnar_nonuniform(
         X = np.asarray(X)
 
     if isinstance(X, np.ndarray):
-        if pre_replacement_probabilities is not None and isinstance(
-            pre_replacement_probabilities, torch.Tensor
-        ):
+        if pre_replacement_probabilities is not None and isinstance(pre_replacement_probabilities, torch.Tensor):
             pre_replacement_probabilities = pre_replacement_probabilities.numpy()
-        corrupted_X, probs = _mnar_nonuniform_numpy(
-            X, p, pre_replacement_probabilities, increase_factor
-        )
+        corrupted_X, probs = _mnar_nonuniform_numpy(X, p, pre_replacement_probabilities, increase_factor)
     elif isinstance(X, torch.Tensor):
-        if pre_replacement_probabilities is not None and isinstance(
-            pre_replacement_probabilities, np.ndarray
-        ):
-            pre_replacement_probabilities = torch.from_numpy(
-                pre_replacement_probabilities
-            )
-        corrupted_X, probs = _mnar_nonuniform_torch(
-            X, p, pre_replacement_probabilities, increase_factor
-        )
+        if pre_replacement_probabilities is not None and isinstance(pre_replacement_probabilities, np.ndarray):
+            pre_replacement_probabilities = torch.from_numpy(pre_replacement_probabilities)
+        corrupted_X, probs = _mnar_nonuniform_torch(X, p, pre_replacement_probabilities, increase_factor)
     else:
-        raise TypeError(
-            f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}"
-        )
+        raise TypeError(f"X must be type of list/numpy.ndarray/torch.Tensor, but got {type(X)}")
 
     return corrupted_X, probs
