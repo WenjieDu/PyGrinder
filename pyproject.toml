@@ -1,21 +1,27 @@
 [build-system]
-requires = ["setuptools>=71"]
+requires = ["setuptools>=77"]
 
 [project]
 name = "pygrinder"
 description = "A Python toolkit for introducing missing values into datasets"
 authors = [{ name = "Wenjie Du", email = "wenjay.du@gmail.com" }]
 dynamic = ["version", "readme", "dependencies"]
-license = { file = "LICENSE" }
-requires-python = ">=3.8"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Intended Audience :: Education",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: BSD License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
 ]
@@ -38,13 +44,15 @@ keywords = [
 [project.urls]
 Source = "https://github.com/WenjieDu/PyGrinder"
 Homepage = "https://pypots.com"
-Documentation = "https://docs.pypots.com"
+Documentation = "https://docs.pypots.com/en/latest/pygrinder.html"
 "Bug Tracker" = "https://github.com/WenjieDu/PyGrinder/issues"
 Download = "https://github.com/WenjieDu/PyGrinder/archive/main.zip"
 
 [tool.setuptools.packages.find]
 exclude = [
     "docs*",
+    "requirements*",
+    "scripts*",
     "test*",
 ]
 
@@ -53,17 +61,11 @@ version = { attr = "pygrinder.version.__version__" }
 readme = { file = "README.md", content-type = "text/markdown" }
 dependencies = { file = "requirements/requirements.txt" }
 
-[tool.flake8]
-# People may argue that coding style is personal. This may be true if the project is personal and one works like a
-# hermit, but to PyPOTS and its community, the answer is NO.
-# We use Black and Flake8 to lint code style and keep the style consistent across all commits and pull requests.
-# Black only reformats the code, and Flake8 is necessary for checking for some other issues not covered by Black.
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+extend-exclude = ["*.md", "*.rst", "*.yml", "*.yaml"]
 
-# The Black line length is default as 88, while the default of Flake8 is 79. However, considering our monitors are
-# much more advanced nowadays, I extend the maximum line length to 120, like other project e.g. transformers. People
-# who prefer the default setting can keep using 88 or 79 while coding. Please ensure your code lines not exceeding 120.
-max-line-length = 120
-# why ignore E203? Refer to https://github.com/PyCQA/pycodestyle/issues/373
-extend-ignore = """
-    E203
-"""
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]
+ignore = ["E501"]

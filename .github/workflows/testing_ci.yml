@@ -2,53 +2,104 @@ name: CI
 
 on:
     push:
-        branches:
-            - main
-            - dev
-            - temp_test_branch  # if in need, create such a temporary branch to test some functions
+        branches: [main, dev]
     pull_request:
-        branches:
-            - dev
+        branches: [main, dev]
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
     test:
         runs-on: ${{ matrix.os }}
+        timeout-minutes: 30
         strategy:
             fail-fast: false
             matrix:
-                os: [ ubuntu-latest, windows-latest, macOS-latest ]
-                python-version: ["3.8","3.11"]
+                include:
+                    - os: ubuntu-latest
+                      python-version: "3.10"
+                    - os: ubuntu-latest
+                      python-version: "3.11"
+                    - os: ubuntu-latest
+                      python-version: "3.12"
+                    - os: ubuntu-latest
+                      python-version: "3.13"
+                    - os: ubuntu-latest
+                      python-version: "3.14"
+                    - os: macos-15
+                      python-version: "3.13"
+                    - os: windows-latest
+                      python-version: "3.12"
 
         steps:
-            - uses: actions/checkout@v5
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  persist-credentials: false
 
             - name: Set up Python
-              uses: actions/setup-python@v5
+              uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
               with:
-                python-version: ${{ matrix.python-version }}
-                check-latest: true
-                cache: pip
-                cache-dependency-path: |
-                    requirements/requirements.txt
+                  python-version: ${{ matrix.python-version }}
+                  check-latest: true
+                  cache: pip
+                  cache-dependency-path: requirements/requirements.txt
 
             - name: Install dependencies
               run: |
-                python -m pip install --upgrade pip
-                pip install numpy==1.24
-                pip install -r requirements/requirements.txt
-                pip install pytest coverage
+                  python -m pip install --only-binary=:all: "pygrinder==0.7" "pytest==9.0.3" "coverage==7.12.0"
 
-            -   name: Test with pytest
-                run: |
-                    coverage run --source=pygrinder -m pytest
+            - name: Test with pytest
+              run: coverage run --source=pygrinder -m pytest
 
-            -   name: Write the LCOV report
-                run: |
-                    coverage lcov
+            - name: Write the LCOV report
+              if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.13'
+              run: coverage lcov
 
-            -   name: Submit report
-                uses: coverallsapp/github-action@master
-                continue-on-error: true
-                with:
-                    github-token: ${{ secrets.GITHUB_TOKEN }}
-                    path-to-lcov: 'coverage.lcov'
+            - name: Submit report
+              if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.13'
+              uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # v2
+              continue-on-error: true
+              with:
+                  github-token: ${{ secrets.GITHUB_TOKEN }}
+                  path-to-lcov: coverage.lcov
+
+    package-validation:
+        runs-on: ubuntu-latest
+        timeout-minutes: 20
+        steps:
+            - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  persist-credentials: false
+
+            - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+              with:
+                  python-version: "3.10"
+
+            - name: Install package validation tools
+              run: |
+                  python -m pip install --only-binary=:all: "build==1.6.1" "setuptools==84.2.1" "twine==6.2.0"
+
+            - name: Build and validate distributions
+              run: |
+                  python -m build --no-isolation
+                  python -m twine check dist/*
+                  VERSION=$(python -c "import runpy; print(runpy.run_path('pygrinder/version.py')['__version__'])")
+                  python scripts/check_release.py --tag "v$VERSION" --dist dist
+
+            - name: Validate wheel installation metadata
+              run: |
+                  python -m pip install --no-deps --no-index --target "$RUNNER_TEMP/pygrinder-package" dist/*.whl
+                  python -c "import importlib.metadata as m, pathlib, sys; sys.path.insert(0, str(pathlib.Path('$RUNNER_TEMP/pygrinder-package'))); d=m.distribution('pygrinder'); assert d.version; assert d.locate_file('pygrinder/__init__.py').is_file()"
+
+            - name: Upload validated distributions
+              uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+              with:
+                  name: validated-distributions
+                  path: dist/*
+                  if-no-files-found: error

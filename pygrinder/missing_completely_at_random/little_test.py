@@ -67,9 +67,7 @@ def mcar_little_test(X: Union[pd.DataFrame, np.ndarray]) -> float:
         means = dataset_temp[select_vars].mean() - global_mean[select_vars]
         select_cov = global_covariance.loc[select_vars, select_vars]
         mj = len(dataset_temp)
-        parta = np.dot(
-            means.T, np.linalg.solve(select_cov, np.identity(select_cov.shape[1]))
-        )
+        parta = np.dot(means.T, np.linalg.solve(select_cov, np.identity(select_cov.shape[1])))
         d2 += mj * (np.dot(parta, means))
 
     df = pj - n_features

@@ -8,7 +8,7 @@ Welcome to PyGrinder's docs!
 
 **A Python Toolbox for Data Corruption**
 
-.. image:: https://img.shields.io/badge/python-v3-E97040?logo=python&logoColor=white
+.. image:: https://img.shields.io/badge/Python-3.10%2B-E97040?logo=python&logoColor=white
    :alt: Python version
 .. image:: https://img.shields.io/github/v/release/wenjiedu/pygrinder?color=EE781F&include_prereleases&label=Release&logo=github&logoColor=white
    :alt: the latest release version
@@ -27,7 +27,7 @@ Welcome to PyGrinder's docs!
    :target: https://coveralls.io/github/WenjieDu/PyGrinder
 .. image:: https://img.shields.io/endpoint?url=https://pypots.com/figs/downloads_badges/conda_pygrinder_downloads.json
    :alt: Conda downloads
-   :target: https://anaconda.org/conda-forge/pypots
+   :target: https://anaconda.org/conda-forge/pygrinder
 .. image:: https://img.shields.io/endpoint?url=https://pypots.com/figs/downloads_badges/pypi_pygrinder_downloads.json
    :alt: PyPI downloads
    :target: https://pepy.tech/project/pygrinder
@@ -37,6 +37,21 @@ Welcome to PyGrinder's docs!
    :alt: Visit num
 
 In data analysis and modeling, sometimes we may need to corrupt the original data to achieve our goal, for instance, evaluating models' ability to reconstruct corrupted data or assessing the model's performance on only partially-observed data. PyGrinder is such a tool to help you corrupt your data, which provides several patterns to create missing values in the given data.
+
+Installation
+""""""""""""
+
+PyGrinder requires Python 3.10 or newer. Install the latest stable release from PyPI:
+
+.. code-block:: console
+
+   pip install pygrinder
+
+or install it from conda-forge:
+
+.. code-block:: console
+
+   conda install pygrinder -c conda-forge
 
 .. toctree::
    :maxdepth: 2
